@@ -1,8 +1,6 @@
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import PostgresDsn, field_validator
-from typing import Any, Optional, Union
-from pydantic_core.core_schema import FieldValidationInfo
+from pydantic import PostgresDsn
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=Path(__file__).parent.parent/".env",
