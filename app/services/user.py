@@ -1,9 +1,11 @@
-from app.configs.exception.exception import NotFoundError
+from typing import List
 
+from app.configs.exception.exception import NotFoundError, AlreadyExistsError
 from app.repositories.user_repository import UserRepository
 from app.models.user import User
 from app.schemes.user import UserCreateScheme, UserUpdateScheme
-from typing import List
+from app.utils.security import hash_password
+
 
 
 class UserService:
@@ -19,11 +21,19 @@ class UserService:
         if not user:
             raise NotFoundError("User not found.")
         return user
+    
+    def get_user_by_email(self, user_email: str) -> User:
+        user = self._repository.get_by_email(user_email)
+        return user
 
     def create_user(self, request: UserCreateScheme) -> User:
+        user = self.get_user_by_email(request.email)
+        if user:
+            raise AlreadyExistsError('User already exists.')
         user = User(**request.model_dump())
-        dupa = self._repository.save(user)
-        return dupa
+        user.password = hash_password(request.password)
+        user = self._repository.save(user)
+        return user
     
     def update_user(self, user_id: int, request: UserUpdateScheme):
         user = self.get_user_by_id(user_id)

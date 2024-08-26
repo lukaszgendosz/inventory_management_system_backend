@@ -9,6 +9,8 @@ class BaseError(Exception):
 class NotFoundError(BaseError):
     pass
 
+class AlreadyExistsError(BaseError):
+    pass
 
 class BadRequestError(BaseError):
     pass

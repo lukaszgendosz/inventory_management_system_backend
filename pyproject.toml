@@ -16,6 +16,8 @@ psycopg2 = "^2.9.9"
 dependency-injector = "^4.41.0"
 pydantic = {extras = ["email"], version = "^2.8.2"}
 orjson = "^3.10.7"
+passlib = "^1.7.4"
+argon2-cffi = "^23.1.0"
 
 
 [build-system]

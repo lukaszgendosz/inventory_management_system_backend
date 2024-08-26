@@ -8,7 +8,7 @@ from datetime import datetime
 
 from app.configs.exception.error_message import ErrorMessage
 from app.schemes.error import ApiErrorSchema
-from app.configs.exception.exception import AccessDeniedError, BadRequestError, NotFoundError, AuthenticationError
+from app.configs.exception.exception import AccessDeniedError, BadRequestError, NotFoundError, AuthenticationError, AlreadyExistsError
 
 
 def init_error_handler(app: FastAPI):
@@ -55,6 +55,19 @@ def init_error_handler(app: FastAPI):
 
         return ORJSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
+            content=ApiErrorSchema(
+                timestamp=int(now.timestamp() * 1000), 
+                date=now.isoformat(), 
+                msg=exc.msg
+            ).model_dump(),
+        )
+        
+    @app.exception_handler(AlreadyExistsError)
+    async def not_found_error_handle(req: Request, exc: AlreadyExistsError):
+        now = datetime.now()
+
+        return ORJSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
             content=ApiErrorSchema(
                 timestamp=int(now.timestamp() * 1000), 
                 date=now.isoformat(), 
