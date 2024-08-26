@@ -1,20 +1,17 @@
 from alembic import context
 
-from app.database import engine
+from app.database import Database
+from app.configs.config import settings
 from app.models.base import Base
+from app.configs.containers import Application
+from dependency_injector.wiring import inject, Provide
 
 target_metadata = Base.metadata
 
+
 def run_migrations_online():
-    """Run migrations in 'online' mode.
-
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
-    # connectable = create_async_engine(config.DATABASE_URI, future=True)
-
-    with engine.connect() as connection:
+    db = Database(settings.DATABASE_URI)
+    with db._engine.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata
         )
