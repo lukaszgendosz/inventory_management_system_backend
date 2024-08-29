@@ -55,3 +55,7 @@ class UserResponseScheme(BaseModel):
     
     class Config:
         from_attributes=True
+        
+class UserLoginScheme(BaseModel):
+    email: EmailStr
+    password: str

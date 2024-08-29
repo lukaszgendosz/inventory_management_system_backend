@@ -15,10 +15,17 @@ class AlreadyExistsError(BaseError):
 class BadRequestError(BaseError):
     pass
 
-
 class AccessDeniedError(BaseError):
     pass
 
-
 class AuthenticationError(BaseError):
+    pass
+
+class AccessTokenRequired(BaseError):
+    pass
+
+class RefreshTokenRequired(BaseError):
+    pass
+
+class InvalidToken(BaseError):
     pass

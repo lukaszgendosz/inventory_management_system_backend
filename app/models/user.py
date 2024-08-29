@@ -1,20 +1,20 @@
-from app.models.base_class import Base
+from app.models.base import Base
 from sqlalchemy import Column, Integer, String, Text, Boolean, TIMESTAMP, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 
 class User(Base):
     __tablename__ = 'users'
     
-    email = Column(String(255), nullable=True, unique=True)
-    username = Column(String(255), nullable=False)
-    first_name = Column(String(255), nullable=False)
-    last_name = Column(String(255), nullable=False)
-    password = Column(String(255), nullable=False)
-    notes = Column(Text, nullable=True)
-    location_id = Column(Integer, nullable=True)
-    company_id = Column(Integer, nullable=True)
-    department_id = Column(Integer, nullable=True)
-    last_login = Column(TIMESTAMP, nullable=True)
-    activated = Column(Boolean, nullable=False, default=True)
+    email: Mapped[str] = mapped_column(nullable=False, unique=True)
+    username: Mapped[str] = mapped_column(nullable=False)
+    first_name: Mapped[str] = mapped_column(nullable=False)
+    last_name: Mapped[str] = mapped_column(nullable=False)
+    password: Mapped[str] = mapped_column(nullable=False)
+    notes: Mapped[str] = mapped_column(Text, nullable=True)
+    location_id: Mapped[int] = mapped_column(nullable=True)
+    company_id: Mapped[int] = mapped_column(nullable=True)
+    department_id: Mapped[int] = mapped_column(nullable=True)
+    activated: Mapped[bool] = mapped_column(nullable=False, default=True)
 
 
 

@@ -2,7 +2,7 @@ from alembic import context
 
 from app.database import Database
 from app.configs.config import settings
-from app.models.base import Base
+from app.models import Base
 from app.configs.containers import Application
 from dependency_injector.wiring import inject, Provide
 

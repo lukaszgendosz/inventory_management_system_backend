@@ -1,14 +1,13 @@
+from collections.abc import Iterable
+
 from fastapi import APIRouter, Depends, status, HTTPException
 from dependency_injector.wiring import inject, Provide
-from collections.abc import Iterable
 
 from app.services.user import UserService
 from app.schemes.user import UserCreateScheme, UserResponseScheme, UserUpdateScheme
 from app.configs.containers import Application
 
-router = APIRouter(
-    prefix='/api/v1'
-)
+router = APIRouter(tags=['Users'])
 
 @router.get('/users')
 @inject
