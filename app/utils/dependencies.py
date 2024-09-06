@@ -5,7 +5,7 @@ from fastapi import Request, Depends
 from dependency_injector.wiring import inject, Provide
 
 
-from app.configs.exception.exception import InvalidToken, AccessTokenRequired, RefreshTokenRequired
+from app.configs.exception.exception import AuthenticationError, AccessTokenRequired, RefreshTokenRequired
 from app.configs.containers import Application
 from app.models import User
 from app.services import UserService
@@ -40,6 +40,11 @@ async def get_current_user(
 ) -> User:
     user_id = token_details["user"]["id"]
     user = user_service.get_user_by_id(user_id)
+    
+    if not user.is_active:
+        raise AuthenticationError(
+                "Your account is not active. Please contact your administrator."
+            )
     return user
 
 

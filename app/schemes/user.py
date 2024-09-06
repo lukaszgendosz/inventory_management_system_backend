@@ -35,7 +35,7 @@ class UserCreateScheme(BaseModel):
 class UserUpdateScheme(BaseModel):
     email: EmailStr
     first_name: str
-    last_name: str
+    last_name: Optional[str]
     notes: Optional[str] = None
     location_id: Optional[int] = None
     company_id: Optional[int] = None
@@ -52,6 +52,7 @@ class UserResponseScheme(BaseModel):
     location_id: Optional[int] = None
     company_id: Optional[int] = None
     department_id: Optional[int] = None
+    is_active: bool
     
     class Config:
         from_attributes=True

@@ -14,7 +14,7 @@ class User(Base):
     location_id: Mapped[int] = mapped_column(nullable=True)
     company_id: Mapped[int] = mapped_column(nullable=True)
     department_id: Mapped[int] = mapped_column(nullable=True)
-    activated: Mapped[bool] = mapped_column(nullable=False, default=True)
+    is_active: Mapped[bool] = mapped_column(nullable=True, default=True)
 
 
 

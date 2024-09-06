@@ -8,27 +8,44 @@ from .user import UserService
 
 
 
+
 class AuthService:
     def __init__(self, user_service: UserService) -> None:
         self.user_service = user_service
         
-    def login(self, request: UserLoginScheme) -> None:
-        user = self.user_service.get_user_by_email(request.email)
-        if not user or not verify_password(request.password, user.password):
-            raise AuthenticationError("Invalid email or password.")
-        if not user.activated:
-            raise AuthenticationError("Your account is not active. Contact your administrator.")
-        data = {
-            'user': {
-                'id': user.id
-            }
-        }
-        access_token = create_token(data)
-        refresh_token = create_token(data,expires_delta=timedelta(days=1),is_refresh=True)
-        return TokenResponseScheme(access_token=access_token, refresh_token=refresh_token)
+    def login(self, credentials: UserLoginScheme) -> TokenResponseScheme:
+        user = self.user_service.get_user_by_email(credentials.email)
+
+        if not user or not verify_password(
+            credentials.password, user.password
+        ):
+            raise AuthenticationError(
+                "Incorrect email address or password."
+            )
+
+        if not user.is_active:
+            raise AuthenticationError(
+                "Your account is not active. Please contact your administrator."
+            )
+
+        token_data = {"user": {"id": user.id}}
+
+        access_token = create_token(token_data)
+        refresh_token = create_token(
+            token_data, expires_delta=timedelta(days=1), is_refresh=True
+        )
+
+        return TokenResponseScheme(
+            access_token=access_token, refresh_token=refresh_token
+        )
         
         
+    def refresh_token(self, token_data: dict) -> None:
+        new_access_token = create_token({'user': token_data['user']})
         
+        return TokenResponseScheme(
+            access_token=new_access_token, refresh_token=''
+        )     
         
         
         

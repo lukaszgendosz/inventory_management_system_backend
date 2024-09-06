@@ -7,14 +7,11 @@ from dependency_injector.wiring import inject, Provide
 from app.configs.containers import Application
 from app.services.auth import AuthService
 from app.schemes import UserLoginScheme, TokenResponseScheme, UserResponseScheme
-from app.utils.dependencies import get_current_user
+from app.utils.dependencies import get_current_user, RefreshTokenBearer
 
 
 router = APIRouter(tags=['Auth'])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
-
-
-REFRESH_TOKEN_EXPIRY = 2
 
 @router.post("/login")
 @inject
@@ -23,6 +20,16 @@ async def login(
     auth_service: AuthService = Depends(Provide[Application.services.auth_service])
 ) -> TokenResponseScheme:
     return auth_service.login(request)
+
+@router.post("/refresh_token")
+@inject
+async def refresh_token(
+    token_details = Depends(RefreshTokenBearer()), 
+    auth_service: AuthService = Depends(Provide[Application.services.auth_service])
+) -> None:
+    return auth_service.refresh_token(token_details)
+
+
 
 @router.post("/dupa")
 @inject

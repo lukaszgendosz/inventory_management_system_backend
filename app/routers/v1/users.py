@@ -3,8 +3,8 @@ from collections.abc import Iterable
 from fastapi import APIRouter, Depends, status, HTTPException
 from dependency_injector.wiring import inject, Provide
 
-from app.services.user import UserService
-from app.schemes.user import UserCreateScheme, UserResponseScheme, UserUpdateScheme
+from app.services import UserService
+from app.schemes import UserCreateScheme, UserResponseScheme, UserUpdateScheme
 from app.configs.containers import Application
 
 router = APIRouter(tags=['Users'])
@@ -14,7 +14,6 @@ router = APIRouter(tags=['Users'])
 def get_users(
     user_service: UserService = Depends(Provide[Application.services.user_service])
     ) -> list[UserResponseScheme]:
-    print(user_service)
     return user_service.get_users()
 
 @router.get('/users/{user_id}')

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
-from sqlalchemy import Column, TIMESTAMP, Integer
+from sqlalchemy import TIMESTAMP
 from sqlalchemy import func
 from datetime import datetime
 

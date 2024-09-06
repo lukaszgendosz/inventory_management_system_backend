@@ -1,10 +1,11 @@
+from datetime import datetime
+
 from fastapi import status, Request, FastAPI
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.responses import PlainTextResponse
 from fastapi.responses import ORJSONResponse
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-
-from datetime import datetime
+from jwt import PyJWTError
 
 from app.configs.exception.error_message import ErrorMessage
 from app.schemes.error import ApiErrorSchema
@@ -115,11 +116,24 @@ def init_error_handler(app: FastAPI):
         )
         
     @app.exception_handler(SQLAlchemyError)
-    async def sqlalchemy__error_handle(req: Request, exc: IntegrityError):
+    async def sqlalchemy_error_handle(req: Request, exc: IntegrityError):
         now = datetime.now()
 
         return ORJSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=ApiErrorSchema(
+                timestamp=int(now.timestamp() * 1000), 
+                date=now.isoformat(), 
+                msg=repr(exc.args[0])
+            ).model_dump(),
+        )
+        
+    @app.exception_handler(PyJWTError)
+    async def jwt_token_expire_error_handle(req: Request, exc: PyJWTError):
+        now = datetime.now()
+
+        return ORJSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
             content=ApiErrorSchema(
                 timestamp=int(now.timestamp() * 1000), 
                 date=now.isoformat(), 
