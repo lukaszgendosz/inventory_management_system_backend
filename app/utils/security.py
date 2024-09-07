@@ -2,7 +2,6 @@ from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
 import uuid
 
-from dependency_injector.wiring import inject, Provide
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 
@@ -18,7 +17,6 @@ def verify_password(password: str, hash: str) -> bool:
     print(hash)
     return crypt_context.verify(password,hash)
 
-@inject
 def create_token(data: dict, 
                  expires_delta: timedelta | None = None, 
                  is_refresh: bool = False):

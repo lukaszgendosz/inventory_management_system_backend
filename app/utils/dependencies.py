@@ -7,6 +7,7 @@ from dependency_injector.wiring import inject, Provide
 
 from app.configs.exception.exception import AuthenticationError, AccessTokenRequired, RefreshTokenRequired
 from app.configs.containers import Application
+from app.schemes import Role
 from app.models import User
 from app.services import UserService
 from .security import decode_token
@@ -48,14 +49,16 @@ async def get_current_user(
     return user
 
 
-# class RoleChecker:
-#     def __init__(self, allowed_roles: List[str]) -> None:
-#         self.allowed_roles = allowed_roles
+class RoleChecker:
+    def __init__(self, allowed_roles: list[str]) -> None:
+        self.allowed_roles = allowed_roles
 
-#     def __call__(self, current_user: User = Depends(get_current_user)) -> Any:
-#         if not current_user.is_verified:
-#             raise AccountNotVerified()
-#         if current_user.role in self.allowed_roles:
-#             return True
+    def __call__(self, current_user: User = Depends(get_current_user)) -> bool:
+        if current_user.role in self.allowed_roles:
+            return True
 
-#         raise InsufficientPermission()
+        raise AuthenticationError("You do not have permission to perform this action.")
+    
+user_role_checker = RoleChecker([Role.USER, Role.MANAGER, Role.ADMIN])
+manager_role_checker = RoleChecker([Role.MANAGER, Role.ADMIN])
+admin_role_checker = RoleChecker([Role.ADMIN])
