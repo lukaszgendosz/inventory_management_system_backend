@@ -1,11 +1,9 @@
-from typing import Iterator
-
 from app.repositories.base_repository import BaseRepository
 from app.models.user import User
 
 class UserRepository(BaseRepository):
     
-    def get_all(self) -> Iterator[User]:
+    def get_all(self) -> list[User]:
         with self.session_factory() as session:
             return session.query(User).all()
         

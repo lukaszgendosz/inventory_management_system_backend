@@ -23,6 +23,7 @@ class User(Base):
     company_id: Mapped[int] = mapped_column(nullable=True, default=None)
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
     
-
+    department_id: Mapped[int] = mapped_column(ForeignKey("departments.id"), nullable=True, default=None)
+    department: Mapped["Department"] = relationship(back_populates="users", lazy="immediate")
 
 

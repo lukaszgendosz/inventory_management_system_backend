@@ -37,6 +37,7 @@ class UserService:
     
     def update_user(self, user_id: int, request: UserUpdateScheme):
         user = self.get_user_by_id(user_id)
+        
         for key, value in request.model_dump(exclude_unset=True).items():
             setattr(user, key, value)
         return self._repository.save(user)

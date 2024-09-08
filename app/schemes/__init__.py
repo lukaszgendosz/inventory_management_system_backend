@@ -2,6 +2,7 @@ from .error import ApiErrorSchema
 from .token import TokenResponseScheme
 from .user import UserCreateScheme, UserLoginScheme, UserResponseScheme, UserUpdateScheme
 from .role_enum import Role
+from .department import DepartmentCreateScheme, DepartmentUpdateScheme,  DepartmentResponseScheme
 
 __all__ = ['ApiErrorSchema',
            'TokenResponseScheme',
@@ -9,4 +10,7 @@ __all__ = ['ApiErrorSchema',
            'UserLoginScheme',
            'UserResponseScheme',
            'UserUpdateScheme',
-           'Role']
+           'Role',
+           'DepartmentCreateScheme',
+           'DepartmentUpdateScheme',
+           'DepartmentResponseScheme']

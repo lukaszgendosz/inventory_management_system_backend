@@ -1,6 +1,9 @@
+from typing import Optional, Any
+
 from pydantic import BaseModel, EmailStr, field_validator
-from fastapi.exceptions import RequestValidationError
-from typing import Optional
+
+from .role_enum import Role
+from .department import DepartmentResponseScheme
 
 class UserCreateScheme(BaseModel):
     email: EmailStr
@@ -8,7 +11,7 @@ class UserCreateScheme(BaseModel):
     first_name: str
     last_name: str
     password: str
-    notes: Optional[str] = None
+    notes: Optional[str] = ''
     location_id: Optional[int] = None
     company_id: Optional[int] = None
     department_id: Optional[int] = None
@@ -33,13 +36,13 @@ class UserCreateScheme(BaseModel):
         return v
     
 class UserUpdateScheme(BaseModel):
-    email: EmailStr
-    first_name: str
+    email:Optional[EmailStr]
+    first_name: Optional[str]
     last_name: Optional[str]
-    notes: Optional[str] = None
-    location_id: Optional[int] = None
-    company_id: Optional[int] = None
-    department_id: Optional[int] = None
+    notes: Optional[str]
+    location_id: Optional[int]
+    company_id: Optional[int]
+    department_id: Optional[int]
 
 
 class UserResponseScheme(BaseModel):
@@ -48,10 +51,11 @@ class UserResponseScheme(BaseModel):
     username: str
     first_name: str
     last_name: str
+    role: Role
     notes: Optional[str] = None
     location_id: Optional[int] = None
     company_id: Optional[int] = None
-    department_id: Optional[int] = None
+    department: Optional[DepartmentResponseScheme] = None
     is_active: bool
     
     class Config:

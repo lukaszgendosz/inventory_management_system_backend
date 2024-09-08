@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
-from app.services import UserService, AuthService
-from app.repositories import UserRepository, TokenRepository
+from app.services import UserService, AuthService, UserService, DepartmentService
+from app.repositories import UserRepository, TokenRepository, DepartmentRepository
 from app.database import Database
 from app.configs.config import settings
 
@@ -22,6 +22,11 @@ class Repositories(containers.DeclarativeContainer):
         TokenRepository,
         session_factory=gateways.db.provided.session,
     )
+    
+    department_repository = providers.Factory(
+        DepartmentRepository,
+        session_factory=gateways.db.provided.session
+    )
 
 class Services(containers.DeclarativeContainer):
     config = providers.Configuration()
@@ -37,10 +42,16 @@ class Services(containers.DeclarativeContainer):
         user_service = user_service
     )
     
+    department_service = providers.Factory(
+        DepartmentService,
+        department_repository=repositories.department_repository
+    )
+    
 class Application(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
         modules=["app.routers.v1.users",
                  "app.routers.auth",
+                 "app.routers.v1.departments",
                  "app.utils.security"]
     )
     

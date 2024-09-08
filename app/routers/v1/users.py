@@ -3,16 +3,18 @@ from collections.abc import Iterable
 from fastapi import APIRouter, Depends, status, HTTPException
 from dependency_injector.wiring import inject, Provide
 
-from app.services import UserService
 from app.schemes import UserCreateScheme, UserResponseScheme, UserUpdateScheme
+from app.services import UserService
 from app.configs.containers import Application
+from app.utils.dependencies import manager_role_checker, admin_role_checker
 
 router = APIRouter(tags=['Users'])
 
 @router.get('/users')
 @inject
 def get_users(
-    user_service: UserService = Depends(Provide[Application.services.user_service])
+    user_service: UserService = Depends(Provide[Application.services.user_service]),
+    _ = Depends(manager_role_checker)
     ) -> list[UserResponseScheme]:
     return user_service.get_users()
 
@@ -20,7 +22,8 @@ def get_users(
 @inject
 def get_users(
     user_id: int,
-    user_service: UserService = Depends(Provide[Application.services.user_service])
+    user_service: UserService = Depends(Provide[Application.services.user_service]),
+    _ = Depends(manager_role_checker)
     ) -> UserResponseScheme:
     return user_service.get_user_by_id(user_id)
 
@@ -29,7 +32,8 @@ def get_users(
 @inject
 def create_user(
     request: UserCreateScheme,
-    user_service: UserService = Depends(Provide[Application.services.user_service])
+    user_service: UserService = Depends(Provide[Application.services.user_service]),
+    # _ = Depends(admin_role_checker)
     ) -> UserResponseScheme:
     return user_service.create_user(request)
 
@@ -38,6 +42,7 @@ def create_user(
 def update_user(
     user_id: int,
     request: UserUpdateScheme,
-    user_service: UserService = Depends(Provide[Application.services.user_service])
+    user_service: UserService = Depends(Provide[Application.services.user_service]),
+    _ = Depends(admin_role_checker)
     ) -> UserResponseScheme:
     return user_service.update_user(user_id,request)

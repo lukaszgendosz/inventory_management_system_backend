@@ -14,7 +14,6 @@ def hash_password(password: str) -> str:
     return crypt_context.hash(password)
 
 def verify_password(password: str, hash: str) -> bool:
-    print(hash)
     return crypt_context.verify(password,hash)
 
 def create_token(data: dict, 
