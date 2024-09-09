@@ -36,13 +36,13 @@ class UserCreateScheme(BaseModel):
         return v
     
 class UserUpdateScheme(BaseModel):
-    email:Optional[EmailStr]
-    first_name: Optional[str]
-    last_name: Optional[str]
-    notes: Optional[str]
-    location_id: Optional[int]
-    company_id: Optional[int]
-    department_id: Optional[int]
+    email: Optional[EmailStr] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    notes: Optional[str] = None
+    location_id: Optional[int] = None
+    company_id: Optional[int] = None
+    department_id: Optional[int] = None
 
 
 class UserResponseScheme(BaseModel):

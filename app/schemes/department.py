@@ -1,7 +1,8 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from datetime import datetime
 
 from pydantic import BaseModel
+
 
 class DepartmentCreateScheme(BaseModel):
     name: str
