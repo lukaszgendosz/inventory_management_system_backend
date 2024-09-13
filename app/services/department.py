@@ -30,4 +30,5 @@ class DepartmentService:
         return self._repository.save(department)
 
     def delete_department_by_id(self, department_id: int) -> None:
-        return self._repository.delete_by_id(department_id)
+        department = self.get_department_by_id(department_id)
+        return self._repository.delete(department)
