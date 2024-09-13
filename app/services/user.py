@@ -35,12 +35,14 @@ class UserService:
         user = self._repository.save(user)
         return user
     
-    def update_user(self, user_id: int, request: UserUpdateScheme):
+    def update_user(self, user_id: int, request: UserUpdateScheme) -> User:
         user = self.get_user_by_id(user_id)
         
         for key, value in request.model_dump(exclude_unset=True).items():
             setattr(user, key, value)
         return self._repository.save(user)
-
-    def delete_user_by_id(self, user_id: int) -> None:
-        return self._repository.delete_by_id(user_id)
+    
+    def deactivate_user(self, user_id: int) -> None:
+        user = self.get_user_by_id(user_id)
+        user.is_active = False
+        return self._repository.save(user)

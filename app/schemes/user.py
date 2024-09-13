@@ -4,6 +4,7 @@ from pydantic import BaseModel, EmailStr, field_validator
 
 from .role_enum import Role
 from .department import DepartmentResponseScheme
+from.location import LocationResponseScheme
 
 class UserCreateScheme(BaseModel):
     email: EmailStr
@@ -53,8 +54,8 @@ class UserResponseScheme(BaseModel):
     last_name: str
     role: Role
     notes: Optional[str] = None
-    location_id: Optional[int] = None
     company_id: Optional[int] = None
+    location: Optional[LocationResponseScheme] = None
     department: Optional[DepartmentResponseScheme] = None
     is_active: bool
     
