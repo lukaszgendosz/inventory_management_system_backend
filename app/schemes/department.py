@@ -1,4 +1,3 @@
-from typing import Optional, TYPE_CHECKING
 from datetime import datetime
 
 from pydantic import BaseModel
@@ -15,5 +14,3 @@ class DepartmentResponseScheme(BaseModel):
     name: str
     created_at: datetime
     updated_at: datetime
-
-
