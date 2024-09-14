@@ -16,7 +16,7 @@ class DepartmentService:
     def get_department_by_id(self, department_id: int) -> Department:
         department = self._repository.get_by_id(department_id)
         if not department:
-            raise NotFoundError("department not found.")
+            raise NotFoundError("Department not found.")
         return department
 
     def create_department(self, request: DepartmentCreateScheme) -> Department:

@@ -16,7 +16,7 @@ class LocationService:
     def get_location_by_id(self, location_id: int) -> Location:
         location = self._repository.get_by_id(location_id)
         if not location:
-            raise NotFoundError("location not found.")
+            raise NotFoundError("Location not found.")
         return location
 
     def create_location(self, request: LocationCreateScheme) -> Location:
