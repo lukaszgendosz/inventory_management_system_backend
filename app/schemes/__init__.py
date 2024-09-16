@@ -4,6 +4,7 @@ from .user import UserCreateScheme, UserLoginScheme, UserResponseScheme, UserUpd
 from .role_enum import Role
 from .department import DepartmentCreateScheme, DepartmentUpdateScheme,  DepartmentResponseScheme
 from .location import LocationCreateScheme, LocationUpdateScheme, LocationResponseScheme
+from .company import CompanyCreateScheme, CompanyUpdateScheme, CompanyResponseScheme
 
 __all__ = ['ApiErrorSchema',
            'TokenResponseScheme',
@@ -17,4 +18,7 @@ __all__ = ['ApiErrorSchema',
            'DepartmentResponseScheme',
            'LocationCreateScheme',
            'LocationUpdateScheme',
-           'LocationResponseScheme']
+           'LocationResponseScheme',
+           'CompanyCreateScheme',
+           'CompanyUpdateScheme',
+           'CompanyResponseScheme']

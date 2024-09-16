@@ -1,10 +1,12 @@
 from typing import Optional, Any
 
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, field_validator, Field
+from fastapi import UploadFile 
 
 from .role_enum import Role
 from .department import DepartmentResponseScheme
-from.location import LocationResponseScheme
+from .location import LocationResponseScheme
+from .company import CompanyResponseScheme
 
 class UserCreateScheme(BaseModel):
     email: EmailStr
@@ -13,9 +15,9 @@ class UserCreateScheme(BaseModel):
     last_name: str
     password: str
     notes: Optional[str] = ''
-    location_id: Optional[int] = None
-    company_id: Optional[int] = None
-    department_id: Optional[int] = None
+    location_id: Optional[int] = Field(default=None, examples=[None])
+    company_id: Optional[int] = Field(default=None, examples=[None])
+    department_id: Optional[int] = Field(default=None, examples=[None])
     
     @field_validator('password')
     def validate_password(cls, v):
@@ -41,9 +43,9 @@ class UserUpdateScheme(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     notes: Optional[str] = None
-    location_id: Optional[int] = None
-    company_id: Optional[int] = None
-    department_id: Optional[int] = None
+    location_id: Optional[int] = Field(default=None, examples=[None])
+    company_id: Optional[int] = Field(default=None, examples=[None])
+    department_id: Optional[int] = Field(default=None, examples=[None])
 
 
 class UserResponseScheme(BaseModel):
@@ -54,7 +56,7 @@ class UserResponseScheme(BaseModel):
     last_name: str
     role: Role
     notes: Optional[str] = None
-    company_id: Optional[int] = None
+    company: Optional[CompanyResponseScheme] = None
     location: Optional[LocationResponseScheme] = None
     department: Optional[DepartmentResponseScheme] = None
     is_active: bool

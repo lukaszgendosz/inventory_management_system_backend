@@ -9,6 +9,7 @@ from .base import Base
 if TYPE_CHECKING:
     from .department import Department
     from .location import Location
+    from .company import Company
     
 class User(Base):
     __tablename__ = 'users'
@@ -24,9 +25,12 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
     
     department_id: Mapped[int] = mapped_column(ForeignKey("departments.id"), nullable=True, default=None)
-    department: Mapped["Department"] = relationship(back_populates="users", lazy="immediate")
+    department: Mapped["Department"] = relationship(back_populates="users", lazy="joined")
     
     location_id: Mapped[int] = mapped_column(ForeignKey("locations.id"), nullable=True, default=None)
-    location: Mapped["Location"] = relationship(back_populates="users", lazy="immediate")
+    location: Mapped["Location"] = relationship(back_populates="users", lazy="joined")
+    
+    company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), nullable=True, default=None)
+    company: Mapped["Company"] = relationship(back_populates="users", lazy="joined")
 
 

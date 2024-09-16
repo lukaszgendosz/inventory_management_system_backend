@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, UploadFile
 from dependency_injector.wiring import inject, Provide
 
 from app.schemes import UserCreateScheme, UserResponseScheme, UserUpdateScheme
@@ -20,7 +20,7 @@ def get_users(
 
 @router.get('/users/{user_id}')
 @inject
-def get_users(
+def get_user(
     user_id: int,
     user_service: UserService = Depends(Provide[Application.services.user_service]),
     _ = Depends(manager_role_checker)
@@ -46,3 +46,12 @@ def update_user(
     _ = Depends(admin_role_checker)
     ) -> UserResponseScheme:
     return user_service.update_user(user_id,request)
+
+@router.patch('/users/{user_id}/deactivate')
+@inject
+def deactivate_user(
+    user_id: int,
+    user_service: UserService = Depends(Provide[Application.services.user_service]),
+    _ = Depends(admin_role_checker)
+    ) -> None:
+    return user_service.deactivate_user(user_id)
