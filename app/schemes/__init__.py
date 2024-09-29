@@ -38,6 +38,13 @@ from .manufacturer import (
     ManufacturerResponseScheme,
     ManufacturerPaginatedResponseScheme,
 )
+
+from .model import (
+    ModelCreateScheme,
+    ModelUpdateScheme,
+    ModelResponseScheme,
+    ModelPaginatedResponseScheme,
+)
 from .checkout_type import CheckoutType
 from .status import Status
 from .generc_pagination import PaginationResponseScheme
@@ -76,4 +83,8 @@ __all__ = [
     "ManufacturerUpdateScheme",
     "ManufacturerResponseScheme",
     "ManufacturerPaginatedResponseScheme",
+    "ModelCreateScheme",
+    "ModelUpdateScheme",
+    "ModelResponseScheme",
+    "ModelPaginatedResponseScheme",
 ]

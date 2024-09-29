@@ -20,6 +20,7 @@ from app.services import (
     LocationService,
     AssetService,
     ManufacturerService,
+    ModelService,
 )
 from app.repositories import (
     CompanyRepository,
@@ -29,6 +30,7 @@ from app.repositories import (
     LocationRepository,
     AssetRepository,
     ManufacturerRepository,
+    ModelRepository,
 )
 from app.database import Database
 from app.configs.config import settings
@@ -79,6 +81,10 @@ class Repositories(containers.DeclarativeContainer):
         model_class=Manufacturer,
     )
 
+    model_repository = providers.Factory(
+        ModelRepository, session_factory=gateways.db.provided.session, model_class=Model
+    )
+
 
 class Services(containers.DeclarativeContainer):
     config = providers.Configuration()
@@ -109,6 +115,8 @@ class Services(containers.DeclarativeContainer):
         ManufacturerService, manufacturer_repository=repositories.manufacturer_repository
     )
 
+    model_service = providers.Factory(ModelService, model_repository=repositories.model_repository)
+
 
 class Application(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
@@ -120,6 +128,7 @@ class Application(containers.DeclarativeContainer):
             "app.routers.v1.locations",
             "app.routers.v1.companies",
             "app.routers.v1.manufacturers",
+            "app.routers.v1.models",
             "app.utils.security",
         ]
     )

@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from .status import Status
 from .checkout_type import CheckoutType
 from .generc_pagination import PaginationResponseScheme
+from .model import ModelResponseScheme
 
 
 class AssetCreateScheme(BaseModel):
@@ -59,7 +60,7 @@ class AssetResponseScheme(BaseModel):
     invoice_number: Optional[str] = None
     varrianty_expiration_date: Optional[datetime] = None
     notes: Optional[str] = Field(default=None, examples=[None])
-    # model: Optional["ModelResponseScheme"] = None
+    model: Optional["ModelResponseScheme"] = None
     # location: Optional["LocationResponseScheme"] = None
     # company: Optional["CompanyResponseScheme"] = None
     # supplier: Optional["SupplierResponseScheme"] = None

@@ -5,6 +5,7 @@ from .departments import router as departments_router
 from .locations import router as locations_router
 from .companies import router as companies_router
 from .manufacturers import router as manufacturers_router
+from .models import router as models_router
 
 routers = (
     users_router,
@@ -13,6 +14,7 @@ routers = (
     locations_router,
     companies_router,
     manufacturers_router,
+    models_router,
 )
 
 router = APIRouter(prefix="/v1")
