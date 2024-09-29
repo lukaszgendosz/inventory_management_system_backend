@@ -1,9 +1,9 @@
-from collections.abc import Iterable
+from typing import Annotated
 
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, Query
 from dependency_injector.wiring import inject, Provide
 
-from app.schemes import UserCreateScheme, UserResponseScheme, UserUpdateScheme
+from app.schemes import UserCreateScheme, UserResponseScheme, UserUpdateScheme, UserPaginatedResponseScheme, GenericFilterParams
 from app.services import UserService
 from app.configs.containers import Application
 from app.utils.dependencies import manager_role_checker, admin_role_checker
@@ -13,10 +13,13 @@ router = APIRouter(tags=['Users'])
 @router.get('/users')
 @inject
 def get_users(
+    filter_query: Annotated[GenericFilterParams, Query()],
     user_service: UserService = Depends(Provide[Application.services.user_service]),
     _ = Depends(manager_role_checker)
-    ) -> list[UserResponseScheme]:
-    return user_service.get_users()
+    ) -> UserPaginatedResponseScheme:
+    users ,total_pages = user_service.get_users(page=filter_query.page, page_size=filter_query.page_size)
+    users_schemas = [UserResponseScheme.model_validate(user) for user in users]
+    return UserPaginatedResponseScheme(total_pages=total_pages, data=users_schemas)
 
 @router.get('/users/{user_id}')
 @inject

@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends
+from typing import Annotated
+from fastapi import APIRouter, Depends, Query
 from dependency_injector.wiring import inject, Provide
 
-from app.schemes import DepartmentCreateScheme, DepartmentResponseScheme, DepartmentUpdateScheme
+from app.schemes import DepartmentCreateScheme, DepartmentResponseScheme, DepartmentUpdateScheme, DepartmentPaginatedResponseScheme, GenericFilterParams
 from app.services import DepartmentService
 from app.configs.containers import Application
 from app.utils.dependencies import manager_role_checker, admin_role_checker
@@ -11,10 +12,13 @@ router = APIRouter(tags=['Departments'])
 @router.get('/departments')
 @inject
 def get_departments(
+    filter_query: Annotated[GenericFilterParams, Query()],
     department_service: DepartmentService = Depends(Provide[Application.services.department_service]),
     _ = Depends(manager_role_checker)
-    ) -> list[DepartmentResponseScheme]:
-    return department_service.get_departments()
+    ) -> DepartmentPaginatedResponseScheme:
+    departments ,total_pages = department_service.get_departments(page=filter_query.page, page_size=filter_query.page_size)
+    departments_schmeas = [DepartmentResponseScheme.model_validate(department) for department in departments]
+    return DepartmentPaginatedResponseScheme(total_pages=total_pages, data=departments_schmeas)
 
 @router.get('/departments/{department_id}')
 @inject

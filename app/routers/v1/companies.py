@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends
+from typing import Annotated
+from fastapi import APIRouter, Depends, Query
 from dependency_injector.wiring import inject, Provide
 
-from app.schemes import CompanyCreateScheme, CompanyResponseScheme, CompanyUpdateScheme
+from app.schemes import CompanyCreateScheme, CompanyResponseScheme, CompanyUpdateScheme, CompanyPaginatedResponseScheme, GenericFilterParams
 from app.services import CompanyService
 from app.configs.containers import Application
 from app.utils.dependencies import manager_role_checker, admin_role_checker
@@ -11,10 +12,13 @@ router = APIRouter(tags=['Companies'])
 @router.get('/companies')
 @inject
 def get_companies(
+    filter_query: Annotated[GenericFilterParams, Query()],
     company_service: CompanyService = Depends(Provide[Application.services.company_service]),
     _ = Depends(manager_role_checker)
-    ) -> list[CompanyResponseScheme]:
-    return company_service.get_companies()
+    ) -> CompanyPaginatedResponseScheme:
+    companies,total_pages = company_service.get_companies(page=filter_query.page, page_size=filter_query.page_size)
+    companies_schmeas = [CompanyResponseScheme.model_validate(company) for company in companies]
+    return CompanyPaginatedResponseScheme(total_pages=total_pages, data=companies_schmeas)
 
 @router.get('/companies/{company_id}')
 @inject
