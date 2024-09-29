@@ -3,58 +3,70 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query
 from dependency_injector.wiring import inject, Provide
 
-from app.schemes import UserCreateScheme, UserResponseScheme, UserUpdateScheme, UserPaginatedResponseScheme, GenericFilterParams
+from app.schemes import (
+    UserCreateScheme,
+    UserResponseScheme,
+    UserUpdateScheme,
+    UserPaginatedResponseScheme,
+    GenericFilterParams,
+)
 from app.services import UserService
 from app.configs.containers import Application
 from app.utils.dependencies import manager_role_checker, admin_role_checker
 
-router = APIRouter(tags=['Users'])
+router = APIRouter(tags=["Users"])
 
-@router.get('/users')
+
+@router.get("/users")
 @inject
 def get_users(
     filter_query: Annotated[GenericFilterParams, Query()],
     user_service: UserService = Depends(Provide[Application.services.user_service]),
-    _ = Depends(manager_role_checker)
-    ) -> UserPaginatedResponseScheme:
-    users ,total_pages = user_service.get_users(page=filter_query.page, page_size=filter_query.page_size)
+    _=Depends(manager_role_checker),
+) -> UserPaginatedResponseScheme:
+    users, total_pages = user_service.get_users(
+        page=filter_query.page, page_size=filter_query.page_size
+    )
     users_schemas = [UserResponseScheme.model_validate(user) for user in users]
     return UserPaginatedResponseScheme(total_pages=total_pages, data=users_schemas)
 
-@router.get('/users/{user_id}')
+
+@router.get("/users/{user_id}")
 @inject
 def get_user(
     user_id: int,
     user_service: UserService = Depends(Provide[Application.services.user_service]),
-    _ = Depends(manager_role_checker)
-    ) -> UserResponseScheme:
+    _=Depends(manager_role_checker),
+) -> UserResponseScheme:
     return user_service.get_user_by_id(user_id)
 
 
-@router.post('/users')
+@router.post("/users")
 @inject
 def create_user(
     request: UserCreateScheme,
     user_service: UserService = Depends(Provide[Application.services.user_service]),
     # _ = Depends(admin_role_checker)
-    ) -> UserResponseScheme:
+) -> UserResponseScheme:
     return user_service.create_user(request)
 
-@router.patch('/users/{user_id}')
+
+@router.patch("/users/{user_id}")
 @inject
 def update_user(
     user_id: int,
     request: UserUpdateScheme,
     user_service: UserService = Depends(Provide[Application.services.user_service]),
-    _ = Depends(admin_role_checker)
-    ) -> UserResponseScheme:
-    return user_service.update_user(user_id,request)
+    _=Depends(admin_role_checker),
+) -> UserResponseScheme:
+    return user_service.update_user(user_id, request)
 
-@router.patch('/users/{user_id}/deactivate')
+
+@router.patch("/users/{user_id}/deactivate")
 @inject
 def deactivate_user(
     user_id: int,
     user_service: UserService = Depends(Provide[Application.services.user_service]),
-    _ = Depends(admin_role_checker)
-    ) -> None:
+    _=Depends(admin_role_checker),
+) -> None:
     return user_service.deactivate_user(user_id)

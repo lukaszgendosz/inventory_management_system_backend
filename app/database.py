@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session, scoped_session
 from contextlib import AbstractContextManager, contextmanager
 
+
 class Database:
 
     def __init__(self, db_url: str) -> None:

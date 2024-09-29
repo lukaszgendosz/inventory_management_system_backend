@@ -1,5 +1,6 @@
 from enum import Enum, auto
 
+
 class ErrorMessage(Enum):
     code: str
     description: str
@@ -11,5 +12,8 @@ class ErrorMessage(Enum):
         obj.description = description
         return obj
 
-    SOMETHING_WENT_WRONG = ("something_went_wrong", "Something went wrong during processing request.")
-    VALIDATION_FAILED =('unprocessable_entity','Cannot process the request.')
+    SOMETHING_WENT_WRONG = (
+        "something_went_wrong",
+        "Something went wrong during processing request.",
+    )
+    VALIDATION_FAILED = ("unprocessable_entity", "Cannot process the request.")

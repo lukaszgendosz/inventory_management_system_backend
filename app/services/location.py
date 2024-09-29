@@ -4,7 +4,6 @@ from app.models import Location
 from app.schemes import LocationCreateScheme, LocationUpdateScheme
 
 
-
 class LocationService:
 
     def __init__(self, location_repository: LocationRepository) -> None:
@@ -22,7 +21,7 @@ class LocationService:
     def create_location(self, request: LocationCreateScheme) -> Location:
         location = Location(**request.model_dump())
         return self._repository.save(location)
-    
+
     def update_location(self, location_id: int, request: LocationUpdateScheme):
         location = self.get_location_by_id(location_id)
         for key, value in request.model_dump(exclude_unset=True).items():

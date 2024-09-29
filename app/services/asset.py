@@ -4,7 +4,6 @@ from app.models import Asset
 from app.schemes import AssetCreateScheme, AssetUpdateScheme
 
 
-
 class AssetService:
 
     def __init__(self, asset_repository: AssetRepository) -> None:
@@ -26,11 +25,10 @@ class AssetService:
         asset = Asset(**request.model_dump())
         asset = self._repository.save(asset)
         return asset
-    
+
     def update_asset(self, asset_id: int, request: AssetUpdateScheme) -> Asset:
         asset = self.get_asset_by_id(asset_id)
-        
+
         for key, value in request.model_dump(exclude_unset=True).items():
             setattr(asset, key, value)
         return self._repository.save(asset)
-    

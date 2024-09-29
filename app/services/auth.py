@@ -6,22 +6,15 @@ from app.utils.security import verify_password, create_token
 from .user import UserService
 
 
-
-
-
 class AuthService:
     def __init__(self, user_service: UserService) -> None:
         self.user_service = user_service
-        
+
     def login(self, credentials: UserLoginScheme) -> TokenResponseScheme:
         user = self.user_service.get_user_by_email(credentials.email)
 
-        if not user or not verify_password(
-            credentials.password, user.password
-        ):
-            raise AuthenticationError(
-                "Incorrect email address or password."
-            )
+        if not user or not verify_password(credentials.password, user.password):
+            raise AuthenticationError("Incorrect email address or password.")
 
         if not user.is_active:
             raise AuthenticationError(
@@ -38,17 +31,8 @@ class AuthService:
         return TokenResponseScheme(
             access_token=access_token, refresh_token=refresh_token
         )
-        
-        
+
     def refresh_token(self, token_data: dict) -> None:
-        new_access_token = create_token({'user': token_data['user']})
-        
-        return TokenResponseScheme(
-            access_token=new_access_token, refresh_token=''
-        )     
-        
-        
-        
-        
-        
-        
+        new_access_token = create_token({"user": token_data["user"]})
+
+        return TokenResponseScheme(access_token=new_access_token, refresh_token="")

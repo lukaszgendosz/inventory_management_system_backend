@@ -5,10 +5,12 @@ from .location import LocationService
 from .company import CompanyService
 from .asset import AssetService
 
-__all__ = ['AuthService',
-           'UserService',
-           'UserService',
-           'DepartmentService',
-           'LocationService',
-           'CompanyService',
-           'AssetService']
+__all__ = [
+    "AuthService",
+    "UserService",
+    "UserService",
+    "DepartmentService",
+    "LocationService",
+    "CompanyService",
+    "AssetService",
+]

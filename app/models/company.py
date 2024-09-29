@@ -7,11 +7,12 @@ from .base import Base
 if TYPE_CHECKING:
     from .user import User
     from .asset import Asset
-    
+
+
 class Company(Base):
-    __tablename__ = 'companies'
-    
+    __tablename__ = "companies"
+
     name: Mapped[str] = mapped_column(nullable=False, unique=False)
-    
-    users: Mapped[list['User']] = relationship("User", backref="companies")
-    assets: Mapped[list['Asset']] = relationship("Asset", backref="companies")
+
+    users: Mapped[list["User"]] = relationship("User", backref="companies")
+    assets: Mapped[list["Asset"]] = relationship("Asset", backref="companies")

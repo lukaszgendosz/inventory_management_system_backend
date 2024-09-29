@@ -10,14 +10,16 @@ from .supplier import Supplier
 from .category import Category
 from .manufacturer import Manufacturer
 
-__all__ = ['User',
-           'Base',
-           'Token',
-           'Department',
-           'Location',
-           'Company',
-           'Asset',
-           'Model',
-           'Supplier',
-           'Category',
-           'Manufacturer']
+__all__ = [
+    "User",
+    "Base",
+    "Token",
+    "Department",
+    "Location",
+    "Company",
+    "Asset",
+    "Model",
+    "Supplier",
+    "Category",
+    "Manufacturer",
+]

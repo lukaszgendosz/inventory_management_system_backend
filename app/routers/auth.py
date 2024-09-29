@@ -10,36 +10,34 @@ from app.schemes import UserLoginScheme, TokenResponseScheme, UserResponseScheme
 from app.utils.dependencies import get_current_user, RefreshTokenBearer
 
 
-router = APIRouter(tags=['Auth'])
+router = APIRouter(tags=["Auth"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
+
 
 @router.post("/login")
 @inject
 async def login(
-    request: UserLoginScheme, 
-    auth_service: AuthService = Depends(Provide[Application.services.auth_service])
+    request: UserLoginScheme,
+    auth_service: AuthService = Depends(Provide[Application.services.auth_service]),
 ) -> TokenResponseScheme:
     return auth_service.login(request)
+
 
 @router.post("/refresh_token")
 @inject
 async def refresh_token(
-    token_details = Depends(RefreshTokenBearer()), 
-    auth_service: AuthService = Depends(Provide[Application.services.auth_service])
+    token_details=Depends(RefreshTokenBearer()),
+    auth_service: AuthService = Depends(Provide[Application.services.auth_service]),
 ) -> None:
     return auth_service.refresh_token(token_details)
-
 
 
 @router.post("/dupa")
 @inject
 async def dupa(
-    user: Annotated[str, Depends(get_current_user)], 
+    user: Annotated[str, Depends(get_current_user)],
 ) -> UserResponseScheme:
     return user
-
-
-
 
 
 # @auth_router.get("/logout")
@@ -51,7 +49,3 @@ async def dupa(
 #     return JSONResponse(
 #         content={"message": "Logged Out Successfully"}, status_code=status.HTTP_200_OK
 #     )
-
-
-
-

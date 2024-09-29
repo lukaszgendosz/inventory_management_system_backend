@@ -9,7 +9,13 @@ from jwt import PyJWTError
 
 from app.configs.exception.error_message import ErrorMessage
 from app.schemes.error import ApiErrorSchema
-from app.configs.exception.exception import AccessDeniedError, BadRequestError, NotFoundError, AuthenticationError, AlreadyExistsError
+from app.configs.exception.exception import (
+    AccessDeniedError,
+    BadRequestError,
+    NotFoundError,
+    AuthenticationError,
+    AlreadyExistsError,
+)
 
 
 def init_error_handler(app: FastAPI):
@@ -30,10 +36,10 @@ def init_error_handler(app: FastAPI):
     async def request_exception_handle(req: Request, exc: RequestValidationError):
         now = datetime.now()
         if exc.errors():
-            msg = exc.errors()[0]['msg']
+            msg = exc.errors()[0]["msg"]
         else:
             msg = ErrorMessage.VALIDATION_FAILED.description
-            
+
         return ORJSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             content=ApiErrorSchema(
@@ -42,7 +48,7 @@ def init_error_handler(app: FastAPI):
                 msg=msg,
             ).model_dump(),
         )
-        
+
     @app.exception_handler(StarletteHTTPException)
     async def http_exception_handle(req: Request, exc: StarletteHTTPException):
         if exc.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR:
@@ -57,12 +63,10 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=exc.msg
+                timestamp=int(now.timestamp() * 1000), date=now.isoformat(), msg=exc.msg
             ).model_dump(),
         )
-        
+
     @app.exception_handler(AlreadyExistsError)
     async def not_found_error_handle(req: Request, exc: AlreadyExistsError):
         now = datetime.now()
@@ -70,9 +74,7 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_409_CONFLICT,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=exc.msg
+                timestamp=int(now.timestamp() * 1000), date=now.isoformat(), msg=exc.msg
             ).model_dump(),
         )
 
@@ -83,9 +85,7 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=exc.msg
+                timestamp=int(now.timestamp() * 1000), date=now.isoformat(), msg=exc.msg
             ).model_dump(),
         )
 
@@ -96,9 +96,7 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=exc.msg
+                timestamp=int(now.timestamp() * 1000), date=now.isoformat(), msg=exc.msg
             ).model_dump(),
         )
 
@@ -109,12 +107,10 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_403_FORBIDDEN,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=exc.msg
+                timestamp=int(now.timestamp() * 1000), date=now.isoformat(), msg=exc.msg
             ).model_dump(),
         )
-        
+
     @app.exception_handler(SQLAlchemyError)
     async def sqlalchemy_error_handle(req: Request, exc: IntegrityError):
         now = datetime.now()
@@ -122,12 +118,12 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=repr(exc.args[0])
+                timestamp=int(now.timestamp() * 1000),
+                date=now.isoformat(),
+                msg=repr(exc.args[0]),
             ).model_dump(),
         )
-        
+
     @app.exception_handler(PyJWTError)
     async def jwt_token_expire_error_handle(req: Request, exc: PyJWTError):
         now = datetime.now()
@@ -135,8 +131,8 @@ def init_error_handler(app: FastAPI):
         return ORJSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content=ApiErrorSchema(
-                timestamp=int(now.timestamp() * 1000), 
-                date=now.isoformat(), 
-                msg=repr(exc.args[0])
+                timestamp=int(now.timestamp() * 1000),
+                date=now.isoformat(),
+                msg=repr(exc.args[0]),
             ).model_dump(),
         )

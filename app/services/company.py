@@ -4,7 +4,6 @@ from app.models import Company
 from app.schemes import CompanyCreateScheme, CompanyUpdateScheme
 
 
-
 class CompanyService:
 
     def __init__(self, company_repository: CompanyRepository) -> None:
@@ -22,7 +21,7 @@ class CompanyService:
     def create_company(self, request: CompanyCreateScheme) -> Company:
         company = Company(**request.model_dump())
         return self._repository.save(company)
-    
+
     def update_company(self, company_id: int, request: CompanyUpdateScheme):
         company = self.get_company_by_id(company_id)
         for key, value in request.model_dump(exclude_unset=True).items():

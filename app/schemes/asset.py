@@ -1,4 +1,4 @@
-from typing import Optional 
+from typing import Optional
 from datetime import datetime
 
 from pydantic import BaseModel, Field
@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from .status import Status
 from .checkout_type import CheckoutType
 from .generc_pagination import PaginationResponseScheme
+
 
 class AssetCreateScheme(BaseModel):
     name: Optional[str]
@@ -22,12 +23,10 @@ class AssetCreateScheme(BaseModel):
     company_id: Optional[int] = Field(default=None, examples=[None])
     supplier_id: Optional[int] = Field(default=None, examples=[None])
     user_id: Optional[int] = Field(default=None, examples=[None])
-    
-    model_config = {
-        'protected_namespaces': ()
-    }
-    
-    
+
+    model_config = {"protected_namespaces": ()}
+
+
 class AssetUpdateScheme(BaseModel):
     name: Optional[str] = None
     serial_number: Optional[str] = None
@@ -43,14 +42,14 @@ class AssetUpdateScheme(BaseModel):
     company_id: Optional[int] = Field(default=None, examples=[None])
     supplier_id: Optional[int] = Field(default=None, examples=[None])
     user_id: Optional[int] = Field(default=None, examples=[None])
-    
+
     model_config = {
-        'protected_namespaces': (),
+        "protected_namespaces": (),
     }
-    
-    
+
+
 class AssetResponseScheme(BaseModel):
-    id : int
+    id: int
     name: str
     serial_number: str
     status: Status
@@ -65,10 +64,8 @@ class AssetResponseScheme(BaseModel):
     # company: Optional["CompanyResponseScheme"] = None
     # supplier: Optional["SupplierResponseScheme"] = None
     # user: Optional["UserResponseScheme"] = None
-    
-    model_config = {
-        'from_attributes': True
-    }
-    
-    
+
+    model_config = {"from_attributes": True}
+
+
 AssetPaginatedResponseScheme = PaginationResponseScheme[AssetResponseScheme]
