@@ -25,21 +25,13 @@ class User(Base):
     notes: Mapped[str] = mapped_column(Text, nullable=True)
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
 
-    department_id: Mapped[int] = mapped_column(
-        ForeignKey("departments.id"), nullable=True, default=None
-    )
-    department: Mapped["Department"] = relationship(
-        back_populates="users", lazy="joined"
-    )
+    department_id: Mapped[int] = mapped_column(ForeignKey("departments.id"), nullable=True, default=None)
+    department: Mapped["Department"] = relationship(back_populates="users", lazy="joined")
 
-    location_id: Mapped[int] = mapped_column(
-        ForeignKey("locations.id"), nullable=True, default=None
-    )
+    location_id: Mapped[int] = mapped_column(ForeignKey("locations.id"), nullable=True, default=None)
     location: Mapped["Location"] = relationship(back_populates="users", lazy="joined")
 
-    company_id: Mapped[int] = mapped_column(
-        ForeignKey("companies.id"), nullable=True, default=None
-    )
+    company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), nullable=True, default=None)
     company: Mapped["Company"] = relationship(back_populates="users", lazy="joined")
 
     assets: Mapped[list["Asset"]] = relationship("Asset", backref="suppliers")

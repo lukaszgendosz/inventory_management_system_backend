@@ -22,37 +22,23 @@ class Asset(Base):
     serial_number: Mapped[str] = mapped_column(nullable=False, unique=True)
     status: Mapped[Status] = mapped_column(nullable=False, default=Status.AVAILABLE)
     checkout_type: Mapped[CheckoutType] = mapped_column(nullable=True, default=None)
-    purchase_date: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    purchase_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
     purchase_cost: Mapped[float] = mapped_column(nullable=True, default=None)
     invoice_number: Mapped[str] = mapped_column(nullable=True, default=None)
-    varrianty_expiration_date: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=True, default=None
-    )
+    varrianty_expiration_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
     notes: Mapped[str] = mapped_column(Text, nullable=True)
 
-    model_id: Mapped[int] = mapped_column(
-        ForeignKey("models.id"), nullable=True, default=None
-    )
+    model_id: Mapped[int] = mapped_column(ForeignKey("models.id"), nullable=True, default=None)
     model: Mapped["Model"] = relationship(back_populates="assets", lazy="joined")
 
-    location_id: Mapped[int] = mapped_column(
-        ForeignKey("locations.id"), nullable=True, default=None
-    )
+    location_id: Mapped[int] = mapped_column(ForeignKey("locations.id"), nullable=True, default=None)
     location: Mapped["Location"] = relationship(back_populates="assets", lazy="joined")
 
-    company_id: Mapped[int] = mapped_column(
-        ForeignKey("companies.id"), nullable=True, default=None
-    )
+    company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), nullable=True, default=None)
     company: Mapped["Company"] = relationship(back_populates="assets", lazy="joined")
 
-    supplier_id: Mapped[int] = mapped_column(
-        ForeignKey("suppliers.id"), nullable=True, default=None
-    )
+    supplier_id: Mapped[int] = mapped_column(ForeignKey("suppliers.id"), nullable=True, default=None)
     supplier: Mapped["Supplier"] = relationship(back_populates="assets", lazy="joined")
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=True, default=None
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True, default=None)
     user: Mapped["User"] = relationship(back_populates="assets", lazy="joined")

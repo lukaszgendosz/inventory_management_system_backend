@@ -25,11 +25,7 @@ class BaseRepository(Generic[T]):
 
     def get_by_id(self, obj_id: int) -> Optional[T]:
         with self.session_factory() as session:
-            return (
-                session.query(self.model_class)
-                .filter(self.model_class.id == obj_id)
-                .first()
-            )
+            return session.query(self.model_class).filter(self.model_class.id == obj_id).first()
 
     def get_paginated_list(
         self,

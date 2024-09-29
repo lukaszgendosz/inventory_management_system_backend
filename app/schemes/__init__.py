@@ -36,6 +36,7 @@ from .manufacturer import (
     ManufacturerCreateScheme,
     ManufacturerUpdateScheme,
     ManufacturerResponseScheme,
+    ManufacturerPaginatedResponseScheme,
 )
 from .checkout_type import CheckoutType
 from .status import Status
@@ -74,4 +75,5 @@ __all__ = [
     "ManufacturerCreateScheme",
     "ManufacturerUpdateScheme",
     "ManufacturerResponseScheme",
+    "ManufacturerPaginatedResponseScheme",
 ]

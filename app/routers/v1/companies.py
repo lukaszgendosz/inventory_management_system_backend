@@ -20,29 +20,19 @@ router = APIRouter(tags=["Companies"])
 @inject
 def get_companies(
     filter_query: Annotated[GenericFilterParams, Query()],
-    company_service: CompanyService = Depends(
-        Provide[Application.services.company_service]
-    ),
+    company_service: CompanyService = Depends(Provide[Application.services.company_service]),
     _=Depends(manager_role_checker),
 ) -> CompanyPaginatedResponseScheme:
-    companies, total_pages = company_service.get_companies(
-        page=filter_query.page, page_size=filter_query.page_size
-    )
-    companies_schmeas = [
-        CompanyResponseScheme.model_validate(company) for company in companies
-    ]
-    return CompanyPaginatedResponseScheme(
-        total_pages=total_pages, data=companies_schmeas
-    )
+    companies, total_pages = company_service.get_companies(page=filter_query.page, page_size=filter_query.page_size)
+    companies_schmeas = [CompanyResponseScheme.model_validate(company) for company in companies]
+    return CompanyPaginatedResponseScheme(total_pages=total_pages, data=companies_schmeas)
 
 
 @router.get("/companies/{company_id}")
 @inject
 def get_companies(
     company_id: int,
-    company_service: CompanyService = Depends(
-        Provide[Application.services.company_service]
-    ),
+    company_service: CompanyService = Depends(Provide[Application.services.company_service]),
     _=Depends(manager_role_checker),
 ) -> CompanyResponseScheme:
     return company_service.get_company_by_id(company_id)
@@ -52,9 +42,7 @@ def get_companies(
 @inject
 def create_company(
     request: CompanyCreateScheme,
-    company_service: CompanyService = Depends(
-        Provide[Application.services.company_service]
-    ),
+    company_service: CompanyService = Depends(Provide[Application.services.company_service]),
     _=Depends(admin_role_checker),
 ) -> CompanyResponseScheme:
     return company_service.create_company(request)
@@ -65,9 +53,7 @@ def create_company(
 def update_company(
     company_id: int,
     request: CompanyUpdateScheme,
-    company_service: CompanyService = Depends(
-        Provide[Application.services.company_service]
-    ),
+    company_service: CompanyService = Depends(Provide[Application.services.company_service]),
     _=Depends(admin_role_checker),
 ) -> CompanyResponseScheme:
     return company_service.update_company(company_id, request)

@@ -24,9 +24,7 @@ def get_users(
     user_service: UserService = Depends(Provide[Application.services.user_service]),
     _=Depends(manager_role_checker),
 ) -> UserPaginatedResponseScheme:
-    users, total_pages = user_service.get_users(
-        page=filter_query.page, page_size=filter_query.page_size
-    )
+    users, total_pages = user_service.get_users(page=filter_query.page, page_size=filter_query.page_size)
     users_schemas = [UserResponseScheme.model_validate(user) for user in users]
     return UserPaginatedResponseScheme(total_pages=total_pages, data=users_schemas)
 
