@@ -1,5 +1,5 @@
 from app.configs.exception.exception import NotFoundError, AlreadyExistsError
-from app.repositories.company_repository import CompanyRepository
+from app.repositories import CompanyRepository
 from app.models import Company
 from app.schemes import CompanyCreateScheme, CompanyUpdateScheme
 

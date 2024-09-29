@@ -1,5 +1,5 @@
 from app.configs.exception.exception import NotFoundError, AlreadyExistsError
-from app.repositories.department_repository import DepartmentRepository
+from app.repositories import DepartmentRepository
 from app.models import Department
 from app.schemes import DepartmentCreateScheme, DepartmentUpdateScheme
 

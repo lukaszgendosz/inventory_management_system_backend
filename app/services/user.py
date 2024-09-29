@@ -1,9 +1,9 @@
 from typing import List
 
 from app.configs.exception.exception import NotFoundError, AlreadyExistsError
-from app.repositories.user_repository import UserRepository
-from app.models.user import User
-from app.schemes.user import UserCreateScheme, UserUpdateScheme
+from app.repositories import UserRepository
+from app.models import User
+from app.schemes import UserCreateScheme, UserUpdateScheme
 from app.utils.security import hash_password
 
 
