@@ -7,6 +7,7 @@ from .role_enum import Role
 from .department import DepartmentResponseScheme
 from .location import LocationResponseScheme
 from .company import CompanyResponseScheme
+from .generc_pagination import PaginationResponseScheme
 
 class UserCreateScheme(BaseModel):
     email: EmailStr
@@ -67,3 +68,5 @@ class UserResponseScheme(BaseModel):
 class UserLoginScheme(BaseModel):
     email: EmailStr
     password: str
+    
+UserPaginatedResponseScheme = PaginationResponseScheme[UserResponseScheme]

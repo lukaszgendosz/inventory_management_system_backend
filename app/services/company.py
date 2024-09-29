@@ -7,28 +7,28 @@ from app.schemes import CompanyCreateScheme, CompanyUpdateScheme
 
 class CompanyService:
 
-    def __init__(self, department_repository: CompanyRepository) -> None:
-        self._repository: CompanyRepository = department_repository
+    def __init__(self, company_repository: CompanyRepository) -> None:
+        self._repository: CompanyRepository = company_repository
 
-    def get_companies(self) -> list[Company]:
-        return self._repository.get_all()
+    def get_companies(self, page = 1, page_size = 50) -> list[Company]:
+        return self._repository.get_paginated_list(page=page, page_size=page_size)
 
-    def get_department_by_id(self, department_id: int) -> Company:
-        department = self._repository.get_by_id(department_id)
-        if not department:
+    def get_company_by_id(self, company_id: int) -> Company:
+        company = self._repository.get_by_id(company_id)
+        if not company:
             raise NotFoundError("Company not found.")
-        return department
+        return company
 
-    def create_department(self, request: CompanyCreateScheme) -> Company:
-        department = Company(**request.model_dump())
-        return self._repository.save(department)
+    def create_company(self, request: CompanyCreateScheme) -> Company:
+        company = Company(**request.model_dump())
+        return self._repository.save(company)
     
-    def update_department(self, department_id: int, request: CompanyUpdateScheme):
-        department = self.get_department_by_id(department_id)
+    def update_company(self, company_id: int, request: CompanyUpdateScheme):
+        company = self.get_company_by_id(company_id)
         for key, value in request.model_dump(exclude_unset=True).items():
-            setattr(department, key, value)
-        return self._repository.save(department)
+            setattr(company, key, value)
+        return self._repository.save(company)
 
-    def delete_department_by_id(self, department_id: int) -> None:
-        department = self.get_department_by_id(department_id)
-        return self._repository.delete(department)
+    def delete_company_by_id(self, company_id: int) -> None:
+        company = self.get_company_by_id(company_id)
+        return self._repository.delete(company)

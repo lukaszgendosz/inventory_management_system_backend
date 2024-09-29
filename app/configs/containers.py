@@ -1,5 +1,14 @@
 from dependency_injector import containers, providers
-
+from app.models import (User,
+                        Token,
+                        Department,
+                        Location,
+                        Company,
+                        Asset,
+                        Model,
+                        Supplier,
+                        Category,
+                        Manufacturer)
 from app.services import (CompanyService, 
                           UserService, 
                           AuthService, 
@@ -25,26 +34,31 @@ class Repositories(containers.DeclarativeContainer):
     user_repository = providers.Factory(
         UserRepository,
         session_factory=gateways.db.provided.session,
+        model_class=User
     )
     
     token_repository = providers.Factory(
         TokenRepository,
         session_factory=gateways.db.provided.session,
+        model_class=Token
     )
     
     department_repository = providers.Factory(
         DepartmentRepository,
-        session_factory=gateways.db.provided.session
+        session_factory=gateways.db.provided.session,
+        model_class=Department
     )
     
     location_repository = providers.Factory(
         LocationRepository,
-        session_factory=gateways.db.provided.session
+        session_factory=gateways.db.provided.session,
+        model_class=Location
     )
     
     company_repository = providers.Factory(
         CompanyRepository,
-        session_factory=gateways.db.provided.session
+        session_factory=gateways.db.provided.session,
+        model_class=Company
     )
 
 class Services(containers.DeclarativeContainer):
