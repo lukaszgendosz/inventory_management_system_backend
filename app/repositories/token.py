@@ -1,6 +1,6 @@
 from typing import Iterator 
 
-from app.repositories.base_repository import BaseRepository
+from app.repositories.base import BaseRepository
 from app.models import Token
 
 class TokenRepository(BaseRepository):

@@ -10,7 +10,7 @@ class CompanyService:
     def __init__(self, company_repository: CompanyRepository) -> None:
         self._repository: CompanyRepository = company_repository
 
-    def get_companies(self, page = 1, page_size = 50) -> list[Company]:
+    def get_companies(self, page, page_size) -> list[Company]:
         return self._repository.get_paginated_list(page=page, page_size=page_size)
 
     def get_company_by_id(self, company_id: int) -> Company:

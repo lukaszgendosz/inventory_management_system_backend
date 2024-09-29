@@ -13,7 +13,7 @@ class UserService:
     def __init__(self, user_repository: UserRepository) -> None:
         self._repository: UserRepository = user_repository
 
-    def get_users(self, page = 1, page_size = 50) -> list[User]:
+    def get_users(self, page, page_size) -> list[User]:
         return self._repository.get_paginated_list(page=page, page_size=page_size)
 
     def get_user_by_id(self, user_id: int) -> User:

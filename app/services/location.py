@@ -10,7 +10,7 @@ class LocationService:
     def __init__(self, location_repository: LocationRepository) -> None:
         self._repository: LocationRepository = location_repository
 
-    def get_locations(self, page = 1, page_size = 50) -> list[Location]:
+    def get_locations(self, page, page_size) -> list[Location]:
         return self._repository.get_paginated_list(page=page, page_size=page_size)
 
     def get_location_by_id(self, location_id: int) -> Location:

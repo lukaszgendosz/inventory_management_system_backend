@@ -6,6 +6,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .user import User
+    from .asset import Asset
     
 class Location(Base):
     __tablename__ = 'locations'
@@ -13,5 +14,6 @@ class Location(Base):
     name: Mapped[str] = mapped_column(nullable=False, unique=False)
     
     users: Mapped[list['User']] = relationship("User", backref="locations")
+    assets: Mapped[list['Asset']] = relationship("Asset", backref="locations")
     
     

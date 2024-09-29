@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from .department import Department
     from .location import Location
     from .company import Company
+    from .asset import Asset
     
 class User(Base):
     __tablename__ = 'users'
@@ -21,7 +22,6 @@ class User(Base):
     role: Mapped[Role] = mapped_column(nullable=False, default=Role.USER)
     password: Mapped[str] = mapped_column(nullable=False)
     notes: Mapped[str] = mapped_column(Text, nullable=True)
-    company_id: Mapped[int] = mapped_column(nullable=True, default=None)
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
     
     department_id: Mapped[int] = mapped_column(ForeignKey("departments.id"), nullable=True, default=None)
@@ -32,5 +32,8 @@ class User(Base):
     
     company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), nullable=True, default=None)
     company: Mapped["Company"] = relationship(back_populates="users", lazy="joined")
+    
+    assets: Mapped[list['Asset']] = relationship("Asset", backref="suppliers")
+    
 
 

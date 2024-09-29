@@ -10,7 +10,7 @@ class DepartmentService:
     def __init__(self, department_repository: DepartmentRepository) -> None:
         self._repository: DepartmentRepository = department_repository
 
-    def get_departments(self, page = 1, page_size = 50) -> list[Department]:
+    def get_departments(self, page, page_size) -> list[Department]:
         return self._repository.get_paginated_list(page=page, page_size=page_size)
 
     def get_department_by_id(self, department_id: int) -> Department:

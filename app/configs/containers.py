@@ -14,12 +14,14 @@ from app.services import (CompanyService,
                           AuthService, 
                           UserService, 
                           DepartmentService, 
-                          LocationService)
+                          LocationService,
+                          AssetService)
 from app.repositories import (CompanyRepository, 
                               UserRepository, 
                               TokenRepository, 
                               DepartmentRepository, 
-                              LocationRepository)
+                              LocationRepository,
+                              AssetRepository)
 from app.database import Database
 from app.configs.config import settings
 
@@ -60,6 +62,12 @@ class Repositories(containers.DeclarativeContainer):
         session_factory=gateways.db.provided.session,
         model_class=Company
     )
+    
+    asset_repository = providers.Factory(
+        AssetRepository,
+        session_factory=gateways.db.provided.session,
+        model_class=Asset
+    )
 
 class Services(containers.DeclarativeContainer):
     config = providers.Configuration()
@@ -90,10 +98,16 @@ class Services(containers.DeclarativeContainer):
         company_repository=repositories.company_repository
     )
     
+    asset_service = providers.Factory(
+        AssetService,
+        asset_repository=repositories.asset_repository
+    )
+    
 class Application(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
         modules=["app.routers.auth",
                  "app.routers.v1.users",
+                 "app.routers.v1.assets",
                  "app.routers.v1.departments",
                  "app.routers.v1.locations",
                  "app.routers.v1.companies",
