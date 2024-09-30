@@ -7,6 +7,10 @@ from .status import Status
 from .checkout_type import CheckoutType
 from .generc_pagination import PaginationResponseScheme
 from .model import ModelResponseScheme
+from .location import LocationResponseScheme
+from .company import CompanyResponseScheme
+from .supplier import SupplierResponseScheme
+from .user import UserResponseScheme
 
 
 class AssetCreateScheme(BaseModel):
@@ -39,9 +43,9 @@ class AssetUpdateScheme(BaseModel):
     varrianty_expiration_date: Optional[datetime] = None
     notes: Optional[str] = Field(default=None, examples=[None])
     model_id: Optional[int] = Field(default=None, examples=[None])
+    supplier_id: Optional[int] = Field(default=None, examples=[None])
     location_id: Optional[int] = Field(default=None, examples=[None])
     company_id: Optional[int] = Field(default=None, examples=[None])
-    supplier_id: Optional[int] = Field(default=None, examples=[None])
     user_id: Optional[int] = Field(default=None, examples=[None])
 
     model_config = {
@@ -61,10 +65,11 @@ class AssetResponseScheme(BaseModel):
     varrianty_expiration_date: Optional[datetime] = None
     notes: Optional[str] = Field(default=None, examples=[None])
     model: Optional["ModelResponseScheme"] = None
-    # location: Optional["LocationResponseScheme"] = None
-    # company: Optional["CompanyResponseScheme"] = None
-    # supplier: Optional["SupplierResponseScheme"] = None
-    # user: Optional["UserResponseScheme"] = None
+    company: Optional["CompanyResponseScheme"] = None
+    supplier: Optional["SupplierResponseScheme"] = None
+    user: Optional["UserResponseScheme"] = None
+    asset: Optional["AssetResponseScheme"] = None
+    location: Optional["LocationResponseScheme"] = None
 
     model_config = {"from_attributes": True}
 

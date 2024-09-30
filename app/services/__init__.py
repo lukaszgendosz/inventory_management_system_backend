@@ -6,6 +6,7 @@ from .company import CompanyService
 from .asset import AssetService
 from .manufacturer import ManufacturerService
 from .model import ModelService
+from .supplier import SupplierService
 
 __all__ = [
     "AuthService",
@@ -17,4 +18,5 @@ __all__ = [
     "AssetService",
     "ManufacturerService",
     "ModelService",
+    "SupplierService",
 ]
