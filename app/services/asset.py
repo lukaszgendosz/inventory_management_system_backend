@@ -1,7 +1,7 @@
 from app.configs.exception.exception import NotFoundError, AlreadyExistsError
 from app.repositories import AssetRepository
 from app.models import Asset
-from app.schemes import AssetCreateScheme, AssetUpdateScheme
+from app.schemes import AssetCreateScheme, AssetUpdateScheme, GenericFilterParams
 
 
 class AssetService:
@@ -9,8 +9,8 @@ class AssetService:
     def __init__(self, asset_repository: AssetRepository) -> None:
         self._repository: AssetRepository = asset_repository
 
-    def get_assets(self, page, page_size) -> list[Asset]:
-        return self._repository.get_paginated_list(page=page, page_size=page_size)
+    def get_assets(self, params: GenericFilterParams) -> list[Asset]:
+        return self._repository.get_paginated_list(params)
 
     def get_asset_by_id(self, asset_id: int) -> Asset:
         asset = self._repository.get_by_id(asset_id)

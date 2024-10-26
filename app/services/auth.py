@@ -24,15 +24,15 @@ class AuthService:
         token_data = {"user": {"id": user.id}}
 
         access_token = create_token(token_data)
-        refresh_token = create_token(
-            token_data, expires_delta=timedelta(days=1), is_refresh=True
-        )
+        refresh_token = create_token(token_data, expires_delta=timedelta(days=14), is_refresh=True)
 
         return TokenResponseScheme(
-            access_token=access_token, refresh_token=refresh_token
+            access_token=access_token, refresh_token=refresh_token, role=user.role
         )
 
     def refresh_token(self, token_data: dict) -> None:
+        user = self.user_service.get_user_by_id(token_data["user"]["id"])
+        role = user.role
         new_access_token = create_token({"user": token_data["user"]})
 
-        return TokenResponseScheme(access_token=new_access_token, refresh_token="")
+        return TokenResponseScheme(access_token=new_access_token, refresh_token="", role=role)

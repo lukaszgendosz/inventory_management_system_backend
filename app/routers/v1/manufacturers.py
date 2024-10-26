@@ -20,13 +20,15 @@ router = APIRouter(tags=["Manufacturers"])
 @inject
 def get_manufacturers(
     filter_query: Annotated[GenericFilterParams, Query()],
-    manufacturer_service: ManufacturerService = Depends(Provide[Application.services.manufacturer_service]),
+    manufacturer_service: ManufacturerService = Depends(
+        Provide[Application.services.manufacturer_service]
+    ),
     _=Depends(manager_role_checker),
 ) -> ManufacturerPaginatedResponseScheme:
-    manufacturers, total_pages = manufacturer_service.get_manufacturers(
-        page=filter_query.page, page_size=filter_query.page_size
-    )
-    manufacturers_schmeas = [ManufacturerResponseScheme.model_validate(manufacturer) for manufacturer in manufacturers]
+    manufacturers, total_pages = manufacturer_service.get_manufacturers(parmas=filter_query)
+    manufacturers_schmeas = [
+        ManufacturerResponseScheme.model_validate(manufacturer) for manufacturer in manufacturers
+    ]
     return ManufacturerPaginatedResponseScheme(total_pages=total_pages, data=manufacturers_schmeas)
 
 
@@ -34,7 +36,9 @@ def get_manufacturers(
 @inject
 def get_manufacturers(
     manufacturer_id: int,
-    manufacturer_service: ManufacturerService = Depends(Provide[Application.services.manufacturer_service]),
+    manufacturer_service: ManufacturerService = Depends(
+        Provide[Application.services.manufacturer_service]
+    ),
     _=Depends(manager_role_checker),
 ) -> ManufacturerResponseScheme:
     return manufacturer_service.get_manufacturer_by_id(manufacturer_id)
@@ -44,7 +48,9 @@ def get_manufacturers(
 @inject
 def create_manufacturer(
     request: ManufacturerCreateScheme,
-    manufacturer_service: ManufacturerService = Depends(Provide[Application.services.manufacturer_service]),
+    manufacturer_service: ManufacturerService = Depends(
+        Provide[Application.services.manufacturer_service]
+    ),
     _=Depends(manager_role_checker),
 ) -> ManufacturerResponseScheme:
     return manufacturer_service.create_manufacturer(request)
@@ -55,7 +61,9 @@ def create_manufacturer(
 def update_manufacturer(
     manufacturer_id: int,
     request: ManufacturerUpdateScheme,
-    manufacturer_service: ManufacturerService = Depends(Provide[Application.services.manufacturer_service]),
+    manufacturer_service: ManufacturerService = Depends(
+        Provide[Application.services.manufacturer_service]
+    ),
     _=Depends(manager_role_checker),
 ) -> ManufacturerResponseScheme:
     return manufacturer_service.update_manufacturer(manufacturer_id, request)

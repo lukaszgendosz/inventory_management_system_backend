@@ -1,7 +1,7 @@
 from app.configs.exception.exception import NotFoundError, AlreadyExistsError
 from app.repositories import CompanyRepository
 from app.models import Company
-from app.schemes import CompanyCreateScheme, CompanyUpdateScheme
+from app.schemes import CompanyCreateScheme, CompanyUpdateScheme, GenericFilterParams
 
 
 class CompanyService:
@@ -9,8 +9,8 @@ class CompanyService:
     def __init__(self, company_repository: CompanyRepository) -> None:
         self._repository: CompanyRepository = company_repository
 
-    def get_companies(self, page, page_size) -> list[Company]:
-        return self._repository.get_paginated_list(page=page, page_size=page_size)
+    def get_companies(self, params: GenericFilterParams) -> list[Company]:
+        return self._repository.get_paginated_list(params=params)
 
     def get_company_by_id(self, company_id: int) -> Company:
         company = self._repository.get_by_id(company_id)

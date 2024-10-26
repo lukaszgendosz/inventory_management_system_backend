@@ -1,7 +1,7 @@
 from app.configs.exception.exception import NotFoundError, AlreadyExistsError
 from app.repositories import DepartmentRepository
 from app.models import Department
-from app.schemes import DepartmentCreateScheme, DepartmentUpdateScheme
+from app.schemes import DepartmentCreateScheme, DepartmentUpdateScheme, GenericFilterParams
 
 
 class DepartmentService:
@@ -9,8 +9,8 @@ class DepartmentService:
     def __init__(self, department_repository: DepartmentRepository) -> None:
         self._repository: DepartmentRepository = department_repository
 
-    def get_departments(self, page, page_size) -> list[Department]:
-        return self._repository.get_paginated_list(page=page, page_size=page_size)
+    def get_departments(self, params: GenericFilterParams) -> list[Department]:
+        return self._repository.get_paginated_list(params)
 
     def get_department_by_id(self, department_id: int) -> Department:
         department = self._repository.get_by_id(department_id)

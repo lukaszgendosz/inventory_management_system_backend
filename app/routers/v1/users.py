@@ -24,7 +24,7 @@ def get_users(
     user_service: UserService = Depends(Provide[Application.services.user_service]),
     _=Depends(manager_role_checker),
 ) -> UserPaginatedResponseScheme:
-    users, total_pages = user_service.get_users(page=filter_query.page, page_size=filter_query.page_size)
+    users, total_pages = user_service.get_users(params=filter_query)
     users_schemas = [UserResponseScheme.model_validate(user) for user in users]
     return UserPaginatedResponseScheme(total_pages=total_pages, data=users_schemas)
 
@@ -65,6 +65,6 @@ def update_user(
 def deactivate_user(
     user_id: int,
     user_service: UserService = Depends(Provide[Application.services.user_service]),
-    _=Depends(admin_role_checker),
+    current_user=Depends(admin_role_checker),
 ) -> None:
-    return user_service.deactivate_user(user_id)
+    return user_service.deactivate_user(user_id, current_user)

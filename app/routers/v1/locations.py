@@ -23,7 +23,7 @@ def get_locations(
     location_service: LocationService = Depends(Provide[Application.services.location_service]),
     _=Depends(manager_role_checker),
 ) -> LocationPaginatedResponseScheme:
-    locations, total_pages = location_service.get_locations(page=filter_query.page, page_size=filter_query.page_size)
+    locations, total_pages = location_service.get_locations(params=filter_query)
     locations_schmeas = [LocationResponseScheme.model_validate(location) for location in locations]
     return LocationPaginatedResponseScheme(total_pages=total_pages, data=locations_schmeas)
 

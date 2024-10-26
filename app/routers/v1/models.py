@@ -23,9 +23,7 @@ def get_models(
     model_service: ModelService = Depends(Provide[Application.services.model_service]),
     _=Depends(manager_role_checker),
 ) -> ModelPaginatedResponseScheme:
-    models, total_pages = model_service.get_models(
-        page=filter_query.page, page_size=filter_query.page_size
-    )
+    models, total_pages = model_service.get_models(params=filter_query)
     models_schmeas = [ModelResponseScheme.model_validate(model) for model in models]
     return ModelPaginatedResponseScheme(total_pages=total_pages, data=models_schmeas)
 

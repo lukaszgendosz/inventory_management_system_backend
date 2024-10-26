@@ -1,7 +1,7 @@
 from app.configs.exception.exception import NotFoundError
 from app.repositories import SupplierRepository
 from app.models import Supplier
-from app.schemes import SupplierCreateScheme, SupplierUpdateScheme
+from app.schemes import SupplierCreateScheme, SupplierUpdateScheme, GenericFilterParams
 
 
 class SupplierService:
@@ -9,8 +9,8 @@ class SupplierService:
     def __init__(self, supplier_repository: SupplierRepository) -> None:
         self._repository: SupplierRepository = supplier_repository
 
-    def get_suppliers(self, page, page_size) -> list[Supplier]:
-        return self._repository.get_paginated_list(page=page, page_size=page_size)
+    def get_suppliers(self, params: GenericFilterParams) -> list[Supplier]:
+        return self._repository.get_paginated_list(params)
 
     def get_supplier_by_id(self, supplier_id: int) -> Supplier:
         supplier = self._repository.get_by_id(supplier_id)

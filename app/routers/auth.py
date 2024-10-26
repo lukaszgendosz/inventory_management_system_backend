@@ -23,21 +23,13 @@ async def login(
     return auth_service.login(request)
 
 
-@router.post("/refresh_token")
+@router.post("/refresh")
 @inject
 async def refresh_token(
     token_details=Depends(RefreshTokenBearer()),
     auth_service: AuthService = Depends(Provide[Application.services.auth_service]),
 ) -> None:
     return auth_service.refresh_token(token_details)
-
-
-@router.post("/dupa")
-@inject
-async def dupa(
-    user: Annotated[str, Depends(get_current_user)],
-) -> UserResponseScheme:
-    return user
 
 
 # @auth_router.get("/logout")

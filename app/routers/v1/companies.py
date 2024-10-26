@@ -23,7 +23,7 @@ def get_companies(
     company_service: CompanyService = Depends(Provide[Application.services.company_service]),
     _=Depends(manager_role_checker),
 ) -> CompanyPaginatedResponseScheme:
-    companies, total_pages = company_service.get_companies(page=filter_query.page, page_size=filter_query.page_size)
+    companies, total_pages = company_service.get_companies(params=filter_query)
     companies_schmeas = [CompanyResponseScheme.model_validate(company) for company in companies]
     return CompanyPaginatedResponseScheme(total_pages=total_pages, data=companies_schmeas)
 

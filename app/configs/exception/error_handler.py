@@ -129,7 +129,7 @@ def init_error_handler(app: FastAPI):
         now = datetime.now()
 
         return ORJSONResponse(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=status.HTTP_403_FORBIDDEN,
             content=ApiErrorSchema(
                 timestamp=int(now.timestamp() * 1000),
                 date=now.isoformat(),

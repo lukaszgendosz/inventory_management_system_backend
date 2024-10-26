@@ -1,7 +1,7 @@
 from app.configs.exception.exception import NotFoundError
 from app.repositories import ModelRepository
 from app.models import Model
-from app.schemes import ModelCreateScheme, ModelUpdateScheme
+from app.schemes import ModelCreateScheme, ModelUpdateScheme, GenericFilterParams
 
 
 class ModelService:
@@ -9,8 +9,8 @@ class ModelService:
     def __init__(self, model_repository: ModelRepository) -> None:
         self._repository: ModelRepository = model_repository
 
-    def get_models(self, page, page_size) -> list[Model]:
-        return self._repository.get_paginated_list(page=page, page_size=page_size)
+    def get_models(self, params: GenericFilterParams) -> list[Model]:
+        return self._repository.get_paginated_list(params)
 
     def get_model_by_id(self, model_id: int) -> Model:
         model = self._repository.get_by_id(model_id)

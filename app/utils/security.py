@@ -19,9 +19,7 @@ def verify_password(password: str, hash: str) -> bool:
     return crypt_context.verify(password, hash)
 
 
-def create_token(
-    data: dict, expires_delta: timedelta | None = None, is_refresh: bool = False
-):
+def create_token(data: dict, expires_delta: timedelta | None = None, is_refresh: bool = False):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta

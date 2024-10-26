@@ -2,7 +2,10 @@ from typing import TypeVar, Generic, Callable, List, Tuple, Optional, Type, Any
 from contextlib import AbstractContextManager
 from math import ceil
 
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+
+from app.schemes import GenericFilterParams
 
 T = TypeVar("T")
 
@@ -29,25 +32,24 @@ class BaseRepository(Generic[T]):
 
     def get_paginated_list(
         self,
-        page: int,
-        page_size: int,
-        filters: Optional[List[Any]] = None,
-        order_by: Optional[List[Any]] = None,
+        params: GenericFilterParams,
     ) -> Tuple[List[T], int]:
         with self.session_factory() as session:
             query = session.query(self.model_class)
+
+            filters = self._generate_filters(params)
 
             if filters:
                 query = query.filter(*filters)
 
             total_records = query.count()
-            total_pages = ceil(total_records / page_size)
+            total_pages = ceil(total_records / params.page_size)
 
-            if order_by:
-                query = query.order_by(*order_by)
+            if params.order_by:
+                query = query.order_by(*params.order_by)
 
-            offset = (page - 1) * page_size
-            results = query.offset(offset).limit(page_size).all()
+            offset = (params.page - 1) * params.page_size
+            results = query.offset(offset).limit(params.page_size).all()
 
             return results, total_pages
 
@@ -56,3 +58,9 @@ class BaseRepository(Generic[T]):
             session.delete(obj)
             session.commit()
             return True
+
+    def _generate_filters(self, params: GenericFilterParams) -> Optional[List[Any]]:
+        filters = []
+        if params.search:
+            filters.append(func.lower(self.model_class.name).contains(func.lower(params.search)))
+        return filters

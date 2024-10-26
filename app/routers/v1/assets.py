@@ -24,7 +24,7 @@ def get_assets(
     asset_service: AssetService = Depends(Provide[Application.services.asset_service]),
     _=Depends(manager_role_checker),
 ) -> AssetPaginatedResponseScheme:
-    assets, total_pages = asset_service.get_assets(page=filter_query.page, page_size=filter_query.page_size)
+    assets, total_pages = asset_service.get_assets(params=filter_query)
     assets_schemas = [AssetResponseScheme.model_validate(asset) for asset in assets]
     return AssetPaginatedResponseScheme(total_pages=total_pages, data=assets_schemas)
 

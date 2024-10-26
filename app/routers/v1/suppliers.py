@@ -23,9 +23,7 @@ def get_suppliers(
     supplier_service: SupplierService = Depends(Provide[Application.services.supplier_service]),
     _=Depends(manager_role_checker),
 ) -> SupplierPaginatedResponseScheme:
-    suppliers, total_pages = supplier_service.get_suppliers(
-        page=filter_query.page, page_size=filter_query.page_size
-    )
+    suppliers, total_pages = supplier_service.get_suppliers(params=filter_query)
     suppliers_schmeas = [SupplierResponseScheme.model_validate(supplier) for supplier in suppliers]
     return SupplierPaginatedResponseScheme(total_pages=total_pages, data=suppliers_schmeas)
 

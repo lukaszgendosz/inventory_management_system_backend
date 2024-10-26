@@ -2,6 +2,7 @@ from app.configs.exception.exception import NotFoundError
 from app.repositories import ManufacturerRepository
 from app.models import Manufacturer
 from app.schemes import ManufacturerCreateScheme, ManufacturerUpdateScheme
+from app.schemes.generic_params import GenericFilterParams
 
 
 class ManufacturerService:
@@ -9,8 +10,8 @@ class ManufacturerService:
     def __init__(self, manufacturer_repository: ManufacturerRepository) -> None:
         self._repository: ManufacturerRepository = manufacturer_repository
 
-    def get_manufacturers(self, page, page_size) -> list[Manufacturer]:
-        return self._repository.get_paginated_list(page=page, page_size=page_size)
+    def get_manufacturers(self, params: GenericFilterParams) -> list[Manufacturer]:
+        return self._repository.get_paginated_list(params)
 
     def get_manufacturer_by_id(self, manufacturer_id: int) -> Manufacturer:
         manufacturer = self._repository.get_by_id(manufacturer_id)

@@ -50,9 +50,7 @@ async def get_current_user(
     user = user_service.get_user_by_id(user_id)
 
     if not user.is_active:
-        raise AuthenticationError(
-            "Your account is not active. Please contact your administrator."
-        )
+        raise AuthenticationError("Your account is not active. Please contact your administrator.")
     return user
 
 
@@ -60,13 +58,11 @@ class RoleChecker:
     def __init__(self, allowed_roles: list[str]) -> None:
         self.allowed_roles = allowed_roles
 
-    # def __call__(self, current_user: User = Depends(get_current_user)) -> bool:
-    #     if current_user.role in self.allowed_roles:
-    #         return True
+    def __call__(self, current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role in self.allowed_roles:
+            return current_user
 
-    #     raise AuthenticationError("You do not have permission to perform this action.")
-    def __call__(self) -> bool:
-        return True
+        raise AuthenticationError("You do not have permission to perform this action.")
 
 
 user_role_checker = RoleChecker([Role.USER, Role.MANAGER, Role.ADMIN])
