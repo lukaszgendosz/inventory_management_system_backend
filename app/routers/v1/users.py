@@ -8,7 +8,7 @@ from app.schemes import (
     UserResponseScheme,
     UserUpdateScheme,
     UserPaginatedResponseScheme,
-    GenericFilterParams,
+    UserParamsScheme,
 )
 from app.services import UserService
 from app.configs.containers import Application
@@ -20,7 +20,7 @@ router = APIRouter(tags=["Users"])
 @router.get("/users")
 @inject
 def get_users(
-    filter_query: Annotated[GenericFilterParams, Query()],
+    filter_query: Annotated[UserParamsScheme, Query()],
     user_service: UserService = Depends(Provide[Application.services.user_service]),
     _=Depends(manager_role_checker),
 ) -> UserPaginatedResponseScheme:
@@ -68,3 +68,13 @@ def deactivate_user(
     current_user=Depends(admin_role_checker),
 ) -> None:
     return user_service.deactivate_user(user_id, current_user)
+
+
+@router.patch("/users/{user_id}/activate")
+@inject
+def activate_user(
+    user_id: int,
+    user_service: UserService = Depends(Provide[Application.services.user_service]),
+    _=Depends(admin_role_checker),
+) -> None:
+    return user_service.activate_user(user_id)

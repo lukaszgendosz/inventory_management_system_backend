@@ -49,3 +49,8 @@ class UserService:
 
         user.is_active = False
         return self._repository.save(user)
+
+    def activate_user(self, user_id: int) -> None:
+        user = self.get_user_by_id(user_id)
+        user.is_active = True
+        return self._repository.save(user)

@@ -8,6 +8,7 @@ from .department import DepartmentResponseScheme
 from .location import LocationResponseScheme
 from .company import CompanyResponseScheme
 from .generc_pagination import PaginationResponseScheme
+from .generic_params import GenericFilterParams
 
 
 class UserCreateScheme(BaseModel):
@@ -25,9 +26,7 @@ class UserCreateScheme(BaseModel):
     def validate_password(cls, v):
         password_lenght = 12
         if len(v) < password_lenght:
-            raise ValueError(
-                f"Password must be at least {password_lenght} characters long."
-            )
+            raise ValueError(f"Password must be at least {password_lenght} characters long.")
 
         if not any(c.isupper() for c in v):
             raise ValueError("Password must contain at least one uppercase letter.")
@@ -73,6 +72,12 @@ class UserResponseScheme(BaseModel):
 class UserLoginScheme(BaseModel):
     email: EmailStr
     password: str
+
+
+class UserParamsScheme(GenericFilterParams):
+    is_active: list[bool] = Field(default=[])
+    company_id: list[int] = Field(default=[])
+    location_id: list[int] = Field(default=[])
 
 
 UserPaginatedResponseScheme = PaginationResponseScheme[UserResponseScheme]
