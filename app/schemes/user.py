@@ -13,14 +13,16 @@ from .generic_params import GenericFilterParams
 
 class UserCreateScheme(BaseModel):
     email: EmailStr
-    username: str
     first_name: str
     last_name: str
     password: str
+    role: Role
+    username: Optional[str] = ""
     notes: Optional[str] = ""
     location_id: Optional[int] = Field(default=None, examples=[None])
     company_id: Optional[int] = Field(default=None, examples=[None])
     department_id: Optional[int] = Field(default=None, examples=[None])
+    is_active: Optional[bool] = Field(default=True, examples=[True])
 
     @field_validator("password")
     def validate_password(cls, v):
@@ -46,6 +48,7 @@ class UserUpdateScheme(BaseModel):
     email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    role: Optional[Role] = None
     notes: Optional[str] = None
     location_id: Optional[int] = Field(default=None, examples=[None])
     company_id: Optional[int] = Field(default=None, examples=[None])
@@ -78,6 +81,7 @@ class UserParamsScheme(GenericFilterParams):
     is_active: list[bool] = Field(default=[])
     company_id: list[int] = Field(default=[])
     location_id: list[int] = Field(default=[])
+    role: list[Role] = Field(default=[])
 
 
 UserPaginatedResponseScheme = PaginationResponseScheme[UserResponseScheme]

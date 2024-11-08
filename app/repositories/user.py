@@ -29,4 +29,6 @@ class UserRepository(BaseRepository[User]):
             filters.append(self.model_class.company_id.in_(params.company_id))
         if params.location_id:
             filters.append(self.model_class.location_id.in_(params.location_id))
+        if params.role:
+            filters.append(self.model_class.role.in_(params.role))
         return filters
