@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from fastapi import status, Request, FastAPI
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
@@ -15,6 +16,7 @@ from app.configs.exception.exception import (
     NotFoundError,
     AuthenticationError,
     AlreadyExistsError,
+    CannotDelete,
 )
 
 
@@ -35,6 +37,7 @@ def init_error_handler(app: FastAPI):
     @app.exception_handler(RequestValidationError)
     async def request_exception_handle(req: Request, exc: RequestValidationError):
         now = datetime.now()
+        logging.error(exc)
         if exc.errors():
             msg = exc.errors()[0]["msg"]
         else:
@@ -134,5 +137,18 @@ def init_error_handler(app: FastAPI):
                 timestamp=int(now.timestamp() * 1000),
                 date=now.isoformat(),
                 msg=repr(exc.args[0]),
+            ).model_dump(),
+        )
+
+    @app.exception_handler(CannotDelete)
+    async def cannot_delete_error_handle(req: Request, exc: CannotDelete):
+        now = datetime.now()
+
+        return ORJSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=ApiErrorSchema(
+                timestamp=int(now.timestamp() * 1000),
+                date=now.isoformat(),
+                msg=repr(exc.msg),
             ).model_dump(),
         )

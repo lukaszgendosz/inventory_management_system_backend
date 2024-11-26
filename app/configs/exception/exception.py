@@ -37,3 +37,7 @@ class RefreshTokenRequired(BaseError):
 
 class InvalidToken(BaseError):
     pass
+
+
+class CannotDelete(BaseError):
+    pass
