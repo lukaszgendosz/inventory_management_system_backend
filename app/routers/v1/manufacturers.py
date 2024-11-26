@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from dependency_injector.wiring import inject, Provide
 
 from app.schemes import (
@@ -25,7 +25,7 @@ def get_manufacturers(
     ),
     _=Depends(manager_role_checker),
 ) -> ManufacturerPaginatedResponseScheme:
-    manufacturers, total_pages = manufacturer_service.get_manufacturers(parmas=filter_query)
+    manufacturers, total_pages = manufacturer_service.get_manufacturers(filter_query)
     manufacturers_schmeas = [
         ManufacturerResponseScheme.model_validate(manufacturer) for manufacturer in manufacturers
     ]
@@ -67,3 +67,16 @@ def update_manufacturer(
     _=Depends(manager_role_checker),
 ) -> ManufacturerResponseScheme:
     return manufacturer_service.update_manufacturer(manufacturer_id, request)
+
+
+@router.delete("/manufacturers/{manufacturer_id}")
+@inject
+def update_manufacturer(
+    manufacturer_id: int,
+    manufacturer_service: ManufacturerService = Depends(
+        Provide[Application.services.manufacturer_service]
+    ),
+    _=Depends(manager_role_checker),
+):
+    manufacturer_service.delete_manufacturer_by_id(manufacturer_id)
+    return Response("OK", status_code=200)

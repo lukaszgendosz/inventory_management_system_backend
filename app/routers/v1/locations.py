@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from dependency_injector.wiring import inject, Provide
 
 from app.schemes import (
@@ -57,3 +57,14 @@ def update_location(
     _=Depends(admin_role_checker),
 ) -> LocationResponseScheme:
     return location_service.update_location(location_id, request)
+
+
+@router.delete("/locations/{location_id}")
+@inject
+def update_location(
+    location_id: int,
+    location_service: LocationService = Depends(Provide[Application.services.location_service]),
+    _=Depends(admin_role_checker),
+):
+    location_service.delete_location_by_id(location_id)
+    return Response("OK", status_code=200)

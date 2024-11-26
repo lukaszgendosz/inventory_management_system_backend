@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from dependency_injector.wiring import inject, Provide
 
 from app.schemes import (
@@ -7,7 +7,7 @@ from app.schemes import (
     ModelResponseScheme,
     ModelUpdateScheme,
     ModelPaginatedResponseScheme,
-    GenericFilterParams,
+    ModelParamsScheme,
 )
 from app.services import ModelService
 from app.configs.containers import Application
@@ -19,7 +19,7 @@ router = APIRouter(tags=["Models"])
 @router.get("/models")
 @inject
 def get_models(
-    filter_query: Annotated[GenericFilterParams, Query()],
+    filter_query: Annotated[ModelParamsScheme, Query()],
     model_service: ModelService = Depends(Provide[Application.services.model_service]),
     _=Depends(manager_role_checker),
 ) -> ModelPaginatedResponseScheme:
@@ -57,3 +57,14 @@ def update_model(
     _=Depends(manager_role_checker),
 ) -> ModelResponseScheme:
     return model_service.update_model(model_id, request)
+
+
+@router.delete("/models/{model_id}")
+@inject
+def update_model(
+    model_id: int,
+    model_service: ModelService = Depends(Provide[Application.services.model_service]),
+    _=Depends(manager_role_checker),
+):
+    model_service.delete_model_by_id(model_id)
+    return Response("OK", status_code=200)

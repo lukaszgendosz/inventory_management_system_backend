@@ -12,7 +12,7 @@ from app.schemes import (
 )
 from app.services import UserService
 from app.configs.containers import Application
-from app.utils.dependencies import manager_role_checker, admin_role_checker
+from app.utils.dependencies import manager_role_checker, admin_role_checker, user_role_checker
 
 router = APIRouter(tags=["Users"])
 
@@ -27,6 +27,14 @@ def get_users(
     users, total_pages = user_service.get_users(params=filter_query)
     users_schemas = [UserResponseScheme.model_validate(user) for user in users]
     return UserPaginatedResponseScheme(total_pages=total_pages, data=users_schemas)
+
+
+@router.get("/users/me")
+@inject
+def get_current_user(
+    current_user=Depends(user_role_checker),
+) -> UserResponseScheme:
+    return current_user
 
 
 @router.get("/users/{user_id}")

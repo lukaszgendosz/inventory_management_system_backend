@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from dependency_injector.wiring import inject, Provide
 
 from app.schemes import (
@@ -67,3 +67,16 @@ def update_department(
     _=Depends(admin_role_checker),
 ) -> DepartmentResponseScheme:
     return department_service.update_department(department_id, request)
+
+
+@router.delete("/departments/{department_id}")
+@inject
+def update_department(
+    department_id: int,
+    department_service: DepartmentService = Depends(
+        Provide[Application.services.department_service]
+    ),
+    _=Depends(admin_role_checker),
+) -> DepartmentResponseScheme:
+    department_service.delete_department_by_id(department_id)
+    return Response("OK", status_code=200)
