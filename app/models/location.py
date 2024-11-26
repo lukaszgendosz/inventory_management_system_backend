@@ -14,5 +14,5 @@ class Location(Base):
 
     name: Mapped[str] = mapped_column(nullable=False, unique=False)
 
-    users: Mapped[list["User"]] = relationship("User", backref="locations")
-    assets: Mapped[list["Asset"]] = relationship("Asset", backref="locations")
+    users: Mapped[list["User"]] = relationship("User", backref="locations", lazy="joined")
+    assets: Mapped[list["Asset"]] = relationship("Asset", backref="locations", lazy="joined")

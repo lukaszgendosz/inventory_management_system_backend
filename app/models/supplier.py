@@ -18,4 +18,4 @@ class Supplier(Base):
     support_phone: Mapped[str] = mapped_column(nullable=True)
     support_email: Mapped[str] = mapped_column(nullable=True)
 
-    assets: Mapped[list["Asset"]] = relationship("Asset")
+    assets: Mapped[list["Asset"]] = relationship("Asset", lazy="joined")

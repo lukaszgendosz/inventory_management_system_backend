@@ -13,4 +13,4 @@ class Department(Base):
 
     name: Mapped[str] = mapped_column(nullable=False, unique=False)
 
-    users: Mapped[list["User"]] = relationship("User", backref="departments")
+    users: Mapped[list["User"]] = relationship("User", backref="departments", lazy="joined")

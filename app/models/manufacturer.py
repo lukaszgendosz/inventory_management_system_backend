@@ -17,4 +17,4 @@ class Manufacturer(Base):
     support_phone: Mapped[str] = mapped_column(nullable=True)
     support_email: Mapped[str] = mapped_column(nullable=True)
 
-    models: Mapped[list["Model"]] = relationship("Model", backref="manufacturers")
+    models: Mapped[list["Model"]] = relationship("Model", backref="manufacturers", lazy="joined")

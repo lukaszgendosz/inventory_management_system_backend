@@ -14,5 +14,5 @@ class Company(Base):
 
     name: Mapped[str] = mapped_column(nullable=False, unique=False)
 
-    users: Mapped[list["User"]] = relationship("User", backref="companies")
-    assets: Mapped[list["Asset"]] = relationship("Asset", backref="companies")
+    users: Mapped[list["User"]] = relationship("User", backref="companies", lazy="joined")
+    assets: Mapped[list["Asset"]] = relationship("Asset", backref="companies", lazy="joined")
