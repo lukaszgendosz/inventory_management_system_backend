@@ -1,4 +1,4 @@
-from app.configs.exception.exception import NotFoundError
+from app.configs.exception.exception import CannotDelete, NotFoundError
 from app.repositories import LocationRepository
 from app.models import Location
 from app.schemes import LocationCreateScheme, LocationUpdateScheme, GenericFilterParams
@@ -30,4 +30,12 @@ class LocationService:
 
     def delete_location_by_id(self, location_id: int) -> None:
         location = self.get_location_by_id(location_id)
+        return self._repository.delete(location)
+
+    def delete_location_by_id(self, location_id: int) -> None:
+        location = self.get_location_by_id(location_id)
+        if location.assets:
+            raise CannotDelete("Cannot delete location with assets assigned.")
+        if location.users:
+            raise CannotDelete("Cannot delete location with users assigned.")
         return self._repository.delete(location)

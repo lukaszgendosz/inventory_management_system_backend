@@ -1,4 +1,4 @@
-from app.configs.exception.exception import NotFoundError, AlreadyExistsError
+from app.configs.exception.exception import CannotDelete, NotFoundError, AlreadyExistsError
 from app.repositories import DepartmentRepository
 from app.models import Department
 from app.schemes import DepartmentCreateScheme, DepartmentUpdateScheme, GenericFilterParams
@@ -30,4 +30,6 @@ class DepartmentService:
 
     def delete_department_by_id(self, department_id: int) -> None:
         department = self.get_department_by_id(department_id)
+        if department.users:
+            raise CannotDelete("Cannot delete department with users assigned.")
         return self._repository.delete(department)

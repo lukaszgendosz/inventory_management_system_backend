@@ -1,4 +1,4 @@
-from app.configs.exception.exception import NotFoundError
+from app.configs.exception.exception import CannotDelete, NotFoundError
 from app.repositories import ModelRepository
 from app.models import Model
 from app.schemes import ModelCreateScheme, ModelUpdateScheme, GenericFilterParams
@@ -30,4 +30,6 @@ class ModelService:
 
     def delete_model_by_id(self, model_id: int) -> None:
         model = self.get_model_by_id(model_id)
+        if model.assets:
+            raise CannotDelete("Cannot delete model with assets assigned.")
         return self._repository.delete(model)

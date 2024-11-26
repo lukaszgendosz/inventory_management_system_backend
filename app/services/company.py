@@ -2,6 +2,7 @@ from app.configs.exception.exception import NotFoundError, AlreadyExistsError
 from app.repositories import CompanyRepository
 from app.models import Company
 from app.schemes import CompanyCreateScheme, CompanyUpdateScheme, GenericFilterParams
+from app.configs.exception.exception import CannotDelete
 
 
 class CompanyService:
@@ -30,4 +31,8 @@ class CompanyService:
 
     def delete_company_by_id(self, company_id: int) -> None:
         company = self.get_company_by_id(company_id)
+        if company.assets:
+            raise CannotDelete("Cannot delete company with assets assigned.")
+        if company.users:
+            raise CannotDelete("Cannot delete company with users assigned.")
         return self._repository.delete(company)

@@ -1,4 +1,4 @@
-from app.configs.exception.exception import NotFoundError
+from app.configs.exception.exception import CannotDelete, NotFoundError
 from app.repositories import SupplierRepository
 from app.models import Supplier
 from app.schemes import SupplierCreateScheme, SupplierUpdateScheme, GenericFilterParams
@@ -30,4 +30,6 @@ class SupplierService:
 
     def delete_supplier_by_id(self, supplier_id: int) -> None:
         supplier = self.get_supplier_by_id(supplier_id)
+        if supplier.assets:
+            raise CannotDelete("Cannot delete supplier with assets assigned.")
         return self._repository.delete(supplier)
