@@ -1,7 +1,9 @@
 from typing import Optional
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+from app.schemes.generic_params import GenericFilterParams
 
 from .generc_pagination import PaginationResponseScheme
 
@@ -30,6 +32,10 @@ class ManufacturerResponseScheme(BaseModel):
     updated_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
+
+
+class ManufacturerParamsScheme(GenericFilterParams):
+    pass
 
 
 ManufacturerPaginatedResponseScheme = PaginationResponseScheme[ManufacturerResponseScheme]

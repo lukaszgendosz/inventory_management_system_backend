@@ -38,6 +38,7 @@ from .manufacturer import (
     ManufacturerUpdateScheme,
     ManufacturerResponseScheme,
     ManufacturerPaginatedResponseScheme,
+    ManufacturerParamsScheme,
 )
 
 from .model import (
@@ -45,6 +46,7 @@ from .model import (
     ModelUpdateScheme,
     ModelResponseScheme,
     ModelPaginatedResponseScheme,
+    ModelParamsScheme,
 )
 from .supplier import (
     SupplierCreateScheme,
@@ -90,9 +92,11 @@ __all__ = [
     "ManufacturerUpdateScheme",
     "ManufacturerResponseScheme",
     "ManufacturerPaginatedResponseScheme",
+    "ManufacturerParamsScheme",
     "ModelCreateScheme",
     "ModelUpdateScheme",
     "ModelResponseScheme",
+    "ModelParamsScheme",
     "ModelPaginatedResponseScheme",
     "SupplierCreateScheme",
     "SupplierUpdateScheme",

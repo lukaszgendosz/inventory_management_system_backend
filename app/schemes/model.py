@@ -3,6 +3,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
+from app.schemes.generic_params import GenericFilterParams
+
 from .generc_pagination import PaginationResponseScheme
 from .manufacturer import ManufacturerResponseScheme
 
@@ -26,12 +28,17 @@ class ModelUpdateScheme(ModelConfigScheme):
 
 
 class ModelResponseScheme(ModelConfigScheme):
+    id: int
     name: str
     model_number: Optional[str] = None
     notes: Optional[str] = None
     manufacturer: Optional[ManufacturerResponseScheme] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
+
+class ModelParamsScheme(GenericFilterParams):
+    manufacturer_id: list[int] = Field(default=[])
 
 
 ModelPaginatedResponseScheme = PaginationResponseScheme[ModelResponseScheme]

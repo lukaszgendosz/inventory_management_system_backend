@@ -17,7 +17,7 @@ class UserCreateScheme(BaseModel):
     last_name: str
     password: str
     role: Role
-    username: Optional[str] = ""
+    # username: Optional[str] = ""
     notes: Optional[str] = ""
     location_id: Optional[int] = Field(default=None, examples=[None])
     company_id: Optional[int] = Field(default=None, examples=[None])
@@ -58,7 +58,6 @@ class UserUpdateScheme(BaseModel):
 class UserResponseScheme(BaseModel):
     id: int
     email: EmailStr
-    username: str
     first_name: str
     last_name: str
     role: Role
