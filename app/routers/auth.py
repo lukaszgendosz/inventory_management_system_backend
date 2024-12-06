@@ -6,8 +6,8 @@ from dependency_injector.wiring import inject, Provide
 
 from app.configs.containers import Application
 from app.services.auth import AuthService
-from app.schemes import UserLoginScheme, TokenResponseScheme, UserResponseScheme
-from app.utils.dependencies import get_current_user, RefreshTokenBearer
+from app.schemes import UserLoginScheme, TokenResponseScheme
+from app.utils.dependencies import RefreshTokenBearer
 
 
 router = APIRouter(tags=["Auth"])
