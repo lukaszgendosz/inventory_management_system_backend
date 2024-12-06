@@ -17,6 +17,7 @@ from app.configs.exception.exception import (
     AuthenticationError,
     AlreadyExistsError,
     CannotDelete,
+    InvalidAssetStatus,
 )
 
 
@@ -37,7 +38,6 @@ def init_error_handler(app: FastAPI):
     @app.exception_handler(RequestValidationError)
     async def request_exception_handle(req: Request, exc: RequestValidationError):
         now = datetime.now()
-        logging.error(exc)
         if exc.errors():
             msg = exc.errors()[0]["msg"]
         else:
@@ -146,6 +146,19 @@ def init_error_handler(app: FastAPI):
 
         return ORJSONResponse(
             status_code=status.HTTP_409_CONFLICT,
+            content=ApiErrorSchema(
+                timestamp=int(now.timestamp() * 1000),
+                date=now.isoformat(),
+                msg=repr(exc.msg),
+            ).model_dump(),
+        )
+
+    @app.exception_handler(InvalidAssetStatus)
+    async def cannot_delete_error_handle(req: Request, exc: CannotDelete):
+        now = datetime.now()
+
+        return ORJSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             content=ApiErrorSchema(
                 timestamp=int(now.timestamp() * 1000),
                 date=now.isoformat(),

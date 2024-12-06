@@ -41,3 +41,7 @@ class InvalidToken(BaseError):
 
 class CannotDelete(BaseError):
     pass
+
+
+class InvalidAssetStatus(BaseError):
+    pass
