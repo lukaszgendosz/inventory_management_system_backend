@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from .location import Location
     from .company import Company
     from .asset import Asset
+    from .asset_logs import AssetLogs
 
 
 class User(Base):
@@ -38,3 +39,4 @@ class User(Base):
     company: Mapped["Company"] = relationship(back_populates="users", lazy="joined")
 
     assets: Mapped[list["Asset"]] = relationship("Asset", backref="suppliers")
+    asset_logs: Mapped[list["AssetLogs"]] = relationship(back_populates="user")

@@ -7,8 +7,8 @@ from .company import Company
 from .asset import Asset
 from .model import Model
 from .supplier import Supplier
-from .category import Category
 from .manufacturer import Manufacturer
+from .asset_logs import AssetLogs
 
 __all__ = [
     "User",
@@ -20,6 +20,6 @@ __all__ = [
     "Asset",
     "Model",
     "Supplier",
-    "Category",
     "Manufacturer",
+    "AssetLogs",
 ]
