@@ -3,7 +3,9 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
-from .status import Status
+from app.schemes.generic_params import GenericFilterParams
+
+from .constraints import Status
 from .checkout_type import CheckoutType
 from .generc_pagination import PaginationResponseScheme
 from .model import ModelResponseScheme
@@ -72,6 +74,40 @@ class AssetResponseScheme(BaseModel):
     location: Optional["LocationResponseScheme"] = None
 
     model_config = {"from_attributes": True}
+
+
+class AssetParamsScheme(GenericFilterParams):
+    serial_number: list[str] = Field(default=[])
+    company_id: list[int] = Field(default=[])
+    location_id: list[int] = Field(default=[])
+    model_id: list[int] = Field(default=[])
+    supplier_id: list[int] = Field(default=[])
+    manufacturer_id: list[int] = Field(default=[])
+    user_id: list[int] = Field(default=[])
+    status: list[Status] = Field(default=[])
+
+    model_config = {"protected_namespaces": ()}
+
+
+class AssetExportScheme(BaseModel):
+    id: int
+    name: str
+    serial_number: str
+    status: Status
+    checkout_to: Optional[str] = None
+    purchase_date: Optional[datetime] = None
+    purchase_cost: Optional[float] = None
+    invoice_number: Optional[str] = None
+    varrianty_expiration_date: Optional[datetime] = None
+    user_email: Optional[str] = None
+    supplier_name: Optional[str] = None
+    company_name: Optional[str] = None
+    location_name: Optional[str] = None
+    model_name: Optional[str] = None
+    manufacturer_name: Optional[str] = None
+    notes: Optional[str] = Field(default=None, examples=[None])
+
+    model_config = {"from_attributes": True, "protected_namespaces": ()}
 
 
 AssetPaginatedResponseScheme = PaginationResponseScheme[AssetResponseScheme]
