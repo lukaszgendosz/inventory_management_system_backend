@@ -8,8 +8,8 @@ from app.models import (
     Asset,
     Model,
     Supplier,
-    Category,
     Manufacturer,
+    AssetLogs,
 )
 from app.services import (
     CompanyService,
@@ -22,6 +22,7 @@ from app.services import (
     ManufacturerService,
     ModelService,
     SupplierService,
+    AssetLogsService,
 )
 from app.repositories import (
     CompanyRepository,
@@ -33,6 +34,7 @@ from app.repositories import (
     ManufacturerRepository,
     ModelRepository,
     SupplierRepository,
+    AssetLogsRepository,
 )
 from app.database import Database
 from app.configs.config import settings
@@ -77,6 +79,12 @@ class Repositories(containers.DeclarativeContainer):
         AssetRepository, session_factory=gateways.db.provided.session, model_class=Asset
     )
 
+    asset_logs_repository = providers.Factory(
+        AssetLogsRepository,
+        session_factory=gateways.db.provided.session,
+        model_class=AssetLogs,
+    )
+
     manufacturer_repository = providers.Factory(
         ManufacturerRepository,
         session_factory=gateways.db.provided.session,
@@ -117,7 +125,16 @@ class Services(containers.DeclarativeContainer):
         CompanyService, company_repository=repositories.company_repository
     )
 
-    asset_service = providers.Factory(AssetService, asset_repository=repositories.asset_repository)
+    asset_logs_service = providers.Factory(
+        AssetLogsService, asset_logs_repository=repositories.asset_logs_repository
+    )
+
+    asset_service = providers.Factory(
+        AssetService,
+        asset_repository=repositories.asset_repository,
+        user_service=user_service,
+        asset_logs_service=asset_logs_service,
+    )
 
     manufacturer_service = providers.Factory(
         ManufacturerService, manufacturer_repository=repositories.manufacturer_repository
@@ -136,6 +153,7 @@ class Application(containers.DeclarativeContainer):
             "app.routers.auth",
             "app.routers.v1.users",
             "app.routers.v1.assets",
+            "app.routers.v1.asset_logs",
             "app.routers.v1.departments",
             "app.routers.v1.locations",
             "app.routers.v1.companies",
@@ -143,6 +161,7 @@ class Application(containers.DeclarativeContainer):
             "app.routers.v1.models",
             "app.routers.v1.suppliers",
             "app.utils.security",
+            "app.utils.dependencies",
         ]
     )
 
