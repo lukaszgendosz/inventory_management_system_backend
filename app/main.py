@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import router
@@ -23,7 +22,6 @@ def configure_middleware(app_: FastAPI):
 container = Application()
 app = FastAPI(title="Inventory Management System")
 app.container = container
-app.mount("/attachments", StaticFiles(directory="/attachments"), name="uploads")
 init_error_handler(app)
 
 app.include_router(router)
