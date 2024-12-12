@@ -53,7 +53,7 @@ class Asset(Base):
     asset_logs: Mapped[list["AssetLogs"]] = relationship(back_populates="asset", lazy="joined")
 
     @property
-    def checked_out_to(self):
+    def checkout_to(self):
         return self.user.email if self.user else None
 
     @property
