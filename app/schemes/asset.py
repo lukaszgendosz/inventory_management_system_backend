@@ -93,7 +93,7 @@ class AssetExportScheme(BaseModel):
     id: int
     name: str
     serial_number: str
-    status: Status
+    status: str
     checkout_to: Optional[str] = None
     purchase_date: Optional[datetime] = None
     purchase_cost: Optional[float] = None
