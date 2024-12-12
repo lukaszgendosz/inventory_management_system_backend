@@ -1,5 +1,4 @@
 from .user import UserRepository
-from .token import TokenRepository
 from .department import DepartmentRepository
 from .location import LocationRepository
 from .company import CompanyRepository
@@ -11,7 +10,6 @@ from .asset_logs import AssetLogsRepository
 
 __all__ = [
     "UserRepository",
-    "TokenRepository",
     "DepartmentRepository",
     "LocationRepository",
     "CompanyRepository",
