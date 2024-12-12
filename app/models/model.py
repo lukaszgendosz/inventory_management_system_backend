@@ -24,4 +24,4 @@ class Model(Base):
         back_populates="models", lazy="joined", overlaps="manufacturer"
     )
 
-    assets: Mapped[list["Asset"]] = relationship("Asset", backref="models")
+    assets: Mapped[list["Asset"]] = relationship("Asset", backref="models", lazy="joined")
